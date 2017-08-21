@@ -30,7 +30,7 @@
 
    <ul class="navRight">
 
-    <li class="M noLeft"><a href="JavaScript:void(0);">您好，{$Think.session.uname}</a>
+    <li class="M noLeft"><a href="JavaScript:void(0);">您好，{$Think.session.uname} <span style='color:#999'>{if $Think.session.gly==1}管理员{/if}{if $Think.session.gly==0}商家{/if}</span></a>
 
     </li>
 
@@ -55,11 +55,11 @@
     <li {if $controller=='Product'}class="cur"{/if}><a href="{:url('product/index')}"><i class="product"></i><em>产品管理</em></a></li>
 
     <li {if $controller=='Order'}class="cur"{/if}><a href="{:url('order/index')}"><i class="page"></i><em>订单管理</em></a></li>
-    <li {if $controller=='Shops'}class="cur"{/if}><a href="{:url('shops/index')}"><i class="theme"></i><em>商铺管理</em></a></li>
+    {if $Think.session.gly==1}<li {if $controller=='Shops'}class="cur"{/if}><a href="{:url('shops/index')}"><i class="theme"></i><em>商铺管理</em></a></li>{/if}
 
     <li {if $controller=='User'}class="cur"{/if}><a href="{:url('User/index')}"><i class="manager"></i><em>用户管理</em></a></li>
 
-    <li {if $controller=='Member'}class="cur"{/if}><a href="{:url('admin/member/index')}"><i class="manager"></i><em>管理员管理</em></a></li>
+    {if $Think.session.gly==1}<li {if $controller=='Member'}class="cur"{/if}><a href="{:url('admin/member/index')}"><i class="manager"></i><em>管理员管理</em></a></li>{/if}
 
  </ul>
 

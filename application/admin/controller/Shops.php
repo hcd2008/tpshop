@@ -4,6 +4,12 @@
 	use app\common\controller\AdminBase;
 
 	class Shops extends AdminBase{
+		public function __construct(){
+			parent::__construct();
+			if($this->_gly==0){
+				$this->error('没有管理员权限');
+			}
+		}
 		/**
 		 * 商铺列表
 		 * @Author   hcd
@@ -52,10 +58,20 @@
 		 */
 		public function edit(){
 			$param=$this->request->param();
+
 			isset($param['id']) or $this->error('非法访问');
-			$info=Db::table('shops')->where('id',$param['id'])->find();
-			$this->assign('info',$info);
-			return $this->fetch();
+			if($this->request->isPost()){
+				if(empty($param['password'])){
+					unset($param['password']);
+				}else{
+					$param['password']=md5($param['password']);
+				}
+			}else{
+				$info=Db::table('shops')->where('id',$param['id'])->find();
+				$this->assign('info',$info);
+				return $this->fetch();
+			}
+			
 		}
 	}
 

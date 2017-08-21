@@ -22,7 +22,7 @@
 				$param['username']!='' or $this->error('用户名不能为空');
 				$param['password']!='' or $this->error('密码不能为空');
 				$res=$this->user_login($param['username'],$param['password']);
-				if($this->user_login($param['username'],$param['password'])){
+				if($res){
 					$this->success("登录成功","product/index");
 				}else{
 					$this->error("账号或密码错误");
@@ -37,20 +37,41 @@
 		 * @return    [type]                   [description]
 		 */
 		public function user_login($username,$password){
-			$user=Db::name("member")->where('username',$username)->find();
+			$user=Db::table("member")->where('username',$username)->find();
 			if($user['userid']){
 				$passsalt=$user['passsalt'];
 				$password=dpassword($password,$passsalt);
-				$res=Db::name('member')->where('username',$username)->where('password',$password)->find();
+				$res=Db::table('member')->where('username',$username)->where('password',$password)->find();
 				if($res){
 					Session::set('uid',$res['userid']);
 					Session::set('uname',$res['username']);
+					//管理器权限
+					Session::set('gly',1);
 					return true;
 				}else{
 					return false;
 				}
 			}else{
-				return false;
+				//不是管理员，则验证是否是商家
+				$sjinfo=Db::table('shops')->where('username',$username)->find();
+				if($sjinfo['id']){
+					if(md5($password)==$sjinfo['password']){
+						//账号是否关闭了
+						if($sjinfo['state']){
+							Session::set('uid',$sjinfo['id']);
+							Session::set('uname',$sjinfo['username']);
+							Session::set('gly',0);
+							return true;
+						}else{
+							$this->error('您的账号已经被关闭，请联系管理员');
+							return false;
+						}
+					}else{
+						return false;
+					}
+				}else{
+					return false;
+				}
 			}
 			
 		}

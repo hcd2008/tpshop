@@ -12,7 +12,11 @@
 		 * @return    [type]                   [description]
 		 */
 		public function index(){
-			$res=Db::name('user')->where("status",1)->order('userid','desc')->paginate(10);
+			$map['status']=1;
+			if($this->_gly==0){
+				$map['ownid']=$this->_userid;
+			}
+			$res=Db::name('user')->where($map)->order('userid','desc')->paginate(10);
 			$this->assign("lists",$res);
 			return $this->fetch();
 		}

@@ -14,9 +14,9 @@
 
 		/**
 
-		 * äº§å“åˆ—è¡¨
+		 * ²úÆ·ÁĞ±í
 
-		 * @Author   é»„ä¼ ä¸œ
+		 * @Author   »Æ´«¶«
 
 		 * @DateTime 2017-05-24T18:21:08+0800
 
@@ -31,6 +31,9 @@
 			$name=isset($param['name'])?trim($param['name']):'';
 
 			$map['status']=1;
+			if($this->_gly==0){
+				$map['userid']=$this->_userid;
+			}
 
 			if($name!=''){
 
@@ -68,7 +71,7 @@
 
 		/**
 
-		 * æ·»åŠ äº§å“
+		 * Ìí¼Ó²úÆ·
 
 		 * @Author   hcd
 
@@ -83,6 +86,10 @@
 			$param=$this->request->param();
 
 			if($this->request->isPost()){
+				//ÅĞ¶ÏÊÇ·ñÊÇÉÌ¼Ò
+				if($this->_gly==0){
+					$param['userid']=$this->_userid;
+				}
 
 				$param['create_time']=time();
 
@@ -98,13 +105,13 @@
 
 				    foreach($files as $file){
 
-				        // ç§»åŠ¨åˆ°æ¡†æ¶åº”ç”¨æ ¹ç›®å½•/public/uploads/ ç›®å½•ä¸‹
+				        // ÒÆ¶¯µ½¿ò¼ÜÓ¦ÓÃ¸ùÄ¿Â¼/public/uploads/ Ä¿Â¼ÏÂ
 
 				        $info = $file->move(ROOT_PATH . DS . 'uploads');
 
 				        if($info){
 
-				            // æˆåŠŸä¸Šä¼ å è·å–ä¸Šä¼ ä¿¡æ¯
+				            // ³É¹¦ÉÏ´«ºó »ñÈ¡ÉÏ´«ĞÅÏ¢
 
 				            $imginfo=$info->getSavename();
 
@@ -116,7 +123,7 @@
 
 				        }else{
 
-				            // ä¸Šä¼ å¤±è´¥è·å–é”™è¯¯ä¿¡æ¯
+				            // ÉÏ´«Ê§°Ü»ñÈ¡´íÎóĞÅÏ¢
 
 				            echo $file->getError();
 
@@ -128,17 +135,20 @@
 
 				if($res){
 
-					$this->success('æ·»åŠ äº§å“æˆåŠŸ');
+					$this->success('Ìí¼Ó²úÆ·³É¹¦');
 
 				}else{
 
-					$this->error('æ·»åŠ äº§å“å¤±è´¥');
+					$this->error('Ìí¼Ó²úÆ·Ê§°Ü');
 
 				}
 
 			}else{
-
-				$catinfo=Db::table('category')->where('status',1)->select();
+				$map['status']=1;
+				if($this->_gly==0){
+					$map['userid']=$this->_userid;
+				}
+				$catinfo=Db::table('category')->where($map)->select();
 
 				$this->assign('catinfo',$catinfo);
 
@@ -150,9 +160,9 @@
 
 		/**
 
-		 * ç¼–è¾‘äº§å“
+		 * ±à¼­²úÆ·
 
-		 * @Author   é»„ä¼ ä¸œ
+		 * @Author   »Æ´«¶«
 
 		 * @DateTime 2017-05-26T15:53:25+0800
 
@@ -163,6 +173,12 @@
 		public function edit(){
 
 			$param=$this->request->param();
+
+			//ÅĞ¶ÏÊÇ·ñÓĞÈ¨ÏŞ
+			//ÉÌ¼ÒĞèÒªÅĞ¶ÏÈ¨ÏŞ
+			if(!$this->auth($param['id'])){
+				$this->error('Ã»ÓĞÈ¨ÏŞ£¬·Ç·¨·ÃÎÊ');
+			}
 
 			if($this->request->isPost()){
 
@@ -182,13 +198,13 @@
 
 				    foreach($files as $file){
 
-				        // ç§»åŠ¨åˆ°æ¡†æ¶åº”ç”¨æ ¹ç›®å½•/public/uploads/ ç›®å½•ä¸‹
+				        // ÒÆ¶¯µ½¿ò¼ÜÓ¦ÓÃ¸ùÄ¿Â¼/public/uploads/ Ä¿Â¼ÏÂ
 
 				        $info = $file->move(ROOT_PATH . DS . 'uploads');
 
 				        if($info){
 
-				            // æˆåŠŸä¸Šä¼ å è·å–ä¸Šä¼ ä¿¡æ¯
+				            // ³É¹¦ÉÏ´«ºó »ñÈ¡ÉÏ´«ĞÅÏ¢
 
 				            $imginfo=$info->getSavename();
 
@@ -200,7 +216,7 @@
 
 				        }else{
 
-				            // ä¸Šä¼ å¤±è´¥è·å–é”™è¯¯ä¿¡æ¯
+				            // ÉÏ´«Ê§°Ü»ñÈ¡´íÎóĞÅÏ¢
 
 				            echo $file->getError();
 
@@ -212,17 +228,19 @@
 
 				if($res){
 
-					$this->success('ç¼–è¾‘äº§å“æˆåŠŸ');
+					$this->success('±à¼­²úÆ·³É¹¦');
 
 				}else{
 
-					$this->error('ç¼–è¾‘äº§å“å¤±è´¥');
+					$this->error('±à¼­²úÆ·Ê§°Ü');
 
 				}
 
 			}else{
 
-				isset($param['id']) or $this->error('éæ³•è®¿é—®');
+				isset($param['id']) or $this->error('·Ç·¨·ÃÎÊ');
+
+
 
 				$info=Db::table('product')->where('id',$param['id'])->find();
 
@@ -241,10 +259,33 @@
 			}
 
 		}
+		/**
+		 * ÅĞ¶ÏÊÇ·ñÓĞÈ¨ÏŞ
+		 * @Author   »Æ´«¶«
+		 * @DateTime 2017-08-21T17:00:05+0800
+		 * @return   [type]                   [description]
+		 */
+		public function auth($pid){
+			if($this->_gly==0){
+				$info=Db::table('product')->where('userid',$this->_userid)->where('id',$pid)->count();
+				if($info){
+					return true;
+				}else{
+					return false;
+				}
+			}else{
+				return true;
+			}
+		}
 
 		public function category(){
+			if($this->_gly==0){
+				$res=Db::table('category')->where('userid',$this->_userid)->order('paixu,id')->select();
+			}else{
+				$res=Db::table('category')->order('paixu,id')->select();
+			}
 
-			$res=Db::table('category')->order('paixu,id')->select();
+			
 
 			return $res;
 
@@ -252,9 +293,9 @@
 
 		/**
 
-		 * åˆ é™¤äº§å“
+		 * É¾³ı²úÆ·
 
-		 * @Author   é»„ä¼ ä¸œ
+		 * @Author   »Æ´«¶«
 
 		 * @DateTime 2017-05-26T16:46:54+0800
 
@@ -266,7 +307,10 @@
 
 			$param=$this->param;
 
-			isset($param['id']) or $this->error('éæ³•è®¿é—®');
+			isset($param['id']) or $this->error('·Ç·¨·ÃÎÊ');
+			if(!$this->auth($param['id'])){
+				$this->error('Ã»ÓĞÈ¨ÏŞ,·Ç·¨·ÃÎÊ');
+			}
 
 			$arr['status']=0;
 
@@ -274,17 +318,17 @@
 
 			if($res){
 
-				$this->success('åˆ é™¤æˆåŠŸ');
+				$this->success('É¾³ı³É¹¦');
 
 			}else{
 
-				$this->error('åˆ é™¤å¤±è´¥');
+				$this->error('É¾³ıÊ§°Ü');
 
 			}
 
 		}
 		/**
-		 * åˆ é™¤å›¾ç‰‡
+		 * É¾³ıÍ¼Æ¬
 		 * @Author   hcd
 		 * @DateTime 2017-07-24T19:18:52+0800
 		 * @version  [version]
@@ -292,14 +336,14 @@
 		 */
 		public function delimg(){
 			$param=$this->request->param();
-			isset($param['id']) or $this->error('éæ³•è®¿é—®');
+			isset($param['id']) or $this->error('·Ç·¨·ÃÎÊ');
 			$arr['id']=$param['id'];
 			$arr['status']=0;
 			$res=Db::table('product_image')->update($arr);
 			if($res){
-				$this->success('åˆ é™¤æˆåŠŸ');
+				$this->success('É¾³ı³É¹¦');
 			}else{
-				$this->error('åˆ é™¤å¤±è´¥');
+				$this->error('É¾³ıÊ§°Ü');
 			}
 		}
 

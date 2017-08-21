@@ -7,6 +7,10 @@
 
 	class AdminBase extends Controller{
 		protected $param;
+		//用户id
+		protected $_userid;
+		//用户组
+		protected $_gly;
 		/**
 		 * 基本类判断用户登录等
 		 * @Author    黄传东
@@ -20,6 +24,10 @@
 		}
 		public function _initialize(){
 			$this->param=$this->request->param();
+			$_userid=Session::has('uid')?Session::get('uid'):0;
+			$_gly=Session::has('gly')?Session::get('gly'):0;
+			$this->_userid=$_userid;
+			$this->_gly=$_gly;
 			$this->isLogin();
 			$this->assign('controller',$this->request->controller());
 		}

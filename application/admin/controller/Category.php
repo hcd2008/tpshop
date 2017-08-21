@@ -5,7 +5,12 @@
 
 	class Category extends Adminbase{
 		public function index(){
-			$res=Db::table('category')->where('status',1)->order('paixu')->select();
+			$map['status']=1;
+			//如果是商家
+			if($this->_gly==0){
+				$map['userid']=$this->_userid;
+			}
+			$res=Db::table('category')->where($map)->order('paixu')->select();
 			$this->assign('lists',$res);
 			return $this->fetch();
 		}
@@ -20,6 +25,7 @@
 				$param=$this->request->param();
 				isset($param['name']) or $this->error('分类名不能为空');
 				$param['update_time']=time();
+				$param['userid']=$this->_userid;
 				$res=Db::table('category')->insert($param);
 				if($res){
 					$this->success('添加分类成功');

@@ -4,6 +4,12 @@
 	use think\Validate;
 	use think\Db;
 	class Member extends Adminbase{
+		public function __construct(){
+			parent::__construct();
+			if($this->_gly==0){
+				$this->error('没有管理员权限');
+			}
+		}
 		/**
 		 * 会员管理模块
 		 * @Author    黄传东
