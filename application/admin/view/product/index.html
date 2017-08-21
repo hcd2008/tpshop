@@ -1,0 +1,106 @@
+<div id="dcMain">
+
+	<div id="urHere">
+
+		后台管理中心<b>></b><strong>产品管理</strong>
+
+	</div>
+
+	<div id="manager" class="mainBox" style="height:auto!important;height:550px;min-height:550px;">
+
+    	<h3>
+
+    		<a href="{:url('product/index')}" class="actionBtn">产品列表</a>
+
+    		<a href="{:url('product/add')}" class="actionBtn add">增加产品</a>
+
+    		产品列表
+
+    	</h3>
+
+    	<div class="filter">
+
+	    	<form action="" method="get">
+
+	    		<select name="catid" id="">
+
+	    			<option value="0">产品分类</option>
+
+					{volist name="catlist" id="vo"}
+
+						<option {if $catid==$vo['id']}selected{/if} value="{$vo.id}">{$vo.name}</option>
+
+					{/volist}
+
+	    		</select>
+
+	    		
+
+				<input type="text" name="name" class="inpMain" size=20 value="{$name}" placeholder="产品名称">
+
+				<input  class="btnGray" type="submit" value="搜索" />
+
+	    	</form>
+
+	    </div>
+
+    	<table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
+
+			<tr>
+
+			 <th align="left">产品名称</th>
+
+			 <th align="center">分类</th>
+
+
+			 <th  align="center">单价</th>
+
+			 <th align="center">库存</th>
+
+			 <th align="center">售出数量</th>
+
+			<th align="center">状态</th>
+			 <th width=100 align="center">操作</th>
+
+			</tr>
+
+			{volist name="lists" id="vo"}
+
+				<tr>
+
+					<td>{$vo.name}</td>
+
+					<td align="center">{$catlist[$vo['catid']]['name']}</td>
+
+					
+
+					<td align="center">{$vo.price}</td>
+
+					<td align="center">{$vo.stock}</td>
+
+					<td align="center">{$vo.sold}</td>
+
+					<td align="center">{if $vo['state']}上架{else}下架{/if}</td>
+					<td align="center">
+
+						<a href="{:url('product/edit',array('id'=>$vo.id))}" title='编辑产品'><img src="__ASSETS__images/edit.png" alt=""></a>
+
+						<a onclick="return confirm('此操作不可恢复，确定删除吗？')" href="{:url('product/del',array('id'=>$vo.id))}" title='删除产品'><img src="__ASSETS__images/delete.png" alt=""></a>
+
+					</td>
+
+				</tr>
+
+			{/volist}
+
+    	</table>
+
+    	<div class="pages">
+
+			{$lists->render()}
+
+    	</div>
+
+    </div>
+
+</div>

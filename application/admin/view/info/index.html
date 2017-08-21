@@ -1,0 +1,167 @@
+<div id="dcMain"> <!-- 当前位置 -->
+
+  <div id="urHere">
+
+    后台管理中心<b>></b><strong>企业信息</strong>
+
+  </div>
+
+  <div id="manager" class="mainBox" style="height:auto!important;height:550px;min-height:550px;">
+
+      <h3>
+
+        企业信息
+
+      </h3>
+
+      <form action="" method="post" enctype="multipart/form-data">
+
+        <table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
+
+        <tr>
+
+          <td width="120px">公司名称</td>
+
+          <td><input type="text" size=60 class="inpMain" name="company" value="{$info.company}"></td>
+
+        </tr>
+
+        <tr>
+
+          <td>公司名称英文</td>
+
+          <td><input type="text" size=60 class="inpMain" name="company_en" value="{$info.company_en}"></td>
+
+        </tr>
+
+        <tr>
+
+          <td width="120px">公司简称</td>
+
+          <td><input type="text" size=60 class="inpMain" name="comp" value="{$info.comp}"></td>
+
+        </tr>
+
+        <tr>
+
+          <td width="120px">公司简称英文</td>
+
+          <td><input type="text" size=60 class="inpMain" name="comp_en" value="{$info.comp_en}"></td>
+
+        </tr>
+
+        <tr>
+
+          <td>中文地址</td>
+
+          <td><input type="text" size=60 class="inpMain" name="address" value="{$info.address}"></td>
+
+        </tr>
+
+        <tr>
+
+          <td>英文地址</td>
+
+          <td><input type="text" size=60 class="inpMain" name="address_en" value="{$info.address_en}"></td>
+
+        </tr>
+
+        <tr>
+
+          <td>坐标经纬度</td>
+
+          <td><input type="text" size=60 class="inpMain" name="jingwei" value="{$info.jingwei}"></td>
+
+        </tr>
+
+        <tr>
+
+          <td>联系人</td>
+
+          <td><input type="text" size=60 class="inpMain" name="man" value="{$info.man}"></td>
+
+        </tr>
+
+        <tr>
+
+          <td>联系人英文</td>
+
+          <td><input type="text" size=60 class="inpMain" name="man_en" value="{$info.man_en}"></td>
+
+        </tr>
+
+        <tr>
+
+          <td>座机</td>
+
+          <td><input type="text" size=60 class="inpMain" name="phone" value="{$info.phone}"></td>
+
+        </tr>
+
+        <tr>
+
+          <td>手机</td>
+
+          <td><input type="text" size=60 class="inpMain" name="mobile" value="{$info.mobile}"></td>
+
+        </tr>
+
+        <tr>
+
+          <td>LOGO图片</td>
+
+          <td>
+            {if $info.logoimg}<img width="200px" src="/uploads//{$info.logoimg}" />{/if}<input type="file" name="logoimg" value="{$info.logoimg}">
+            <input type="hidden" name="logoimg" value="{$info.logoimg}">
+          </td>
+
+        </tr>
+
+        <tr>
+
+          <td>小程序二维码</td>
+
+          <td>{if $info.erweima}<img width="200px" src="/uploads/{$info.erweima}" />{/if}<input  type="file" name="erweima" value="{$info.erweima}">
+            <input type="hidden" name="erweima" value="{$info.erweima}">
+          </td>
+
+        </tr>
+
+        <tr>
+
+          <td>公司简介</td>
+
+          <td>
+
+              <!-- <textarea name="intro" id="" class="inpMain" cols="80" rows="5">{$info.intro}</textarea> -->
+			<!-- 加载编辑器的容器 -->
+			    <script id="container" name="intro" type="text/plain">
+			        {$info.intro}
+			    </script>
+			    <!-- 配置文件 -->
+			    <script type="text/javascript" src="__ASSETS__ueditor/ueditor.config.js"></script>
+			    <!-- 编辑器源码文件 -->
+			    <script type="text/javascript" src="__ASSETS__ueditor/ueditor.all.js"></script>
+			    <!-- 实例化编辑器 -->
+			    <script type="text/javascript">
+			        var ue = UE.getEditor('container',{
+			        	initialFrameWidth:600
+			        });
+			    </script> 
+          </td>
+
+        </tr>
+
+        <tr>
+
+          <td colspan="2"><input type="submit" class="btn" value="提交"></td>
+
+        </tr>
+
+        </table>
+
+      </form>
+
+    </div>
+
+</div>

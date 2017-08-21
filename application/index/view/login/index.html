@@ -1,0 +1,41 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
+<!--[if lt IE 9]>
+<script type="text/javascript" src="lib/html5.js"></script>
+<script type="text/javascript" src="lib/respond.min.js"></script>
+<script type="text/javascript" src="lib/PIE_IE678.js"></script>
+<![endif]-->
+<link href="__ASSETS__css/login.css" rel="stylesheet" type="text/css" />
+
+<!--[if IE 6]>
+<script type="text/javascript" src="http://lib.h-ui.net/DD_belatedPNG_0.0.8a-min.js" ></script>
+<script>DD_belatedPNG.fix('*');</script>
+<![endif]-->
+<title>系统登录</title>
+</head>
+<body>
+<input type="hidden" id="TenantId" name="TenantId" value="" />
+<div class="header">
+
+</div>
+<div class="loginWraper">
+  <div id="loginform" class="loginBox">
+    <form action="{:url('login/login')}" method="post">
+    	<div class="user">
+    		<input type="text" name="username" placeholder='用户名'>
+    	</div>
+    	<div class="mima">
+    		<input type="password" name="password"  placeholder='密码'>
+    	</div>
+    	<div class="denglu">
+    		<input type="submit" id="submit" value="登 录">
+    	</div>
+    </form>
+  </div>
+</div>
+<div class="footer">Copyright 烟台富美特食品科技 by hcd V1.0</div>
+</body>
+</html>

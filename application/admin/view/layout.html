@@ -1,0 +1,94 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <title>后台管理</title>
+
+<link href="__ASSETS__css/public.css" rel="stylesheet" type="text/css">
+
+<link href="__ASSETS__css/common.css" rel="stylesheet" type="text/css">
+
+<script type="text/javascript" src="__ASSETS__js/jquery.min.js"></script>
+
+<script type="text/javascript" src="__ASSETS__js/global.js"></script>
+
+</head>
+
+<body>
+
+<div id="dcWrap"> <div id="dcHead">
+
+ <div id="head">
+
+  <div class="logo"><a href="{:url('admin/index/index')}">智慧商城小程序后台管理</a></div>
+
+  <div class="nav">
+
+   <ul class="navRight">
+
+    <li class="M noLeft"><a href="JavaScript:void(0);">您好，{$Think.session.uname}</a>
+
+    </li>
+
+    <li class="noRight"><a href="{:url('login/logout')}">退出</a></li>
+
+   </ul>
+
+  </div>
+
+ </div>
+
+</div>
+
+<!-- dcHead 结束 --> <div id="dcLeft"><div id="menu">
+
+
+
+ <ul>
+
+    <li {if $controller=='Category'}class="cur"{/if}><a href="{:url('category/index')}"><i class="productCat"></i><em>产品分类管理</em></a></li>
+
+    <li {if $controller=='Product'}class="cur"{/if}><a href="{:url('product/index')}"><i class="product"></i><em>产品管理</em></a></li>
+
+    <li {if $controller=='Order'}class="cur"{/if}><a href="{:url('order/index')}"><i class="page"></i><em>订单管理</em></a></li>
+    <li {if $controller=='Shops'}class="cur"{/if}><a href="{:url('shops/index')}"><i class="theme"></i><em>商铺管理</em></a></li>
+
+    <li {if $controller=='User'}class="cur"{/if}><a href="{:url('User/index')}"><i class="manager"></i><em>用户管理</em></a></li>
+
+    <li {if $controller=='Member'}class="cur"{/if}><a href="{:url('admin/member/index')}"><i class="manager"></i><em>管理员管理</em></a></li>
+
+ </ul>
+
+
+
+</div></div>
+
+{__CONTENT__}
+
+<div class="clear"></div>
+
+</div>
+
+<div id="dcFooter">
+
+ <div id="footer">
+
+  <!-- <div class="line"></div> -->
+
+  <ul>
+
+   
+
+  </ul>
+
+ </div>
+
+</div><!-- dcFooter 结束 -->
+
+</body>
+
+</html>

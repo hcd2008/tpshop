@@ -1,0 +1,87 @@
+<div id="dcMain">
+
+	<div id="urHere">
+
+		后台管理中心<b>></b><strong>商铺管理</strong>
+
+	</div>
+
+	<div id="manager" class="mainBox" style="height:auto!important;height:550px;min-height:550px;">
+
+    	<h3>
+
+    		<a href="{:url('shops/index')}" class="actionBtn">商铺列表</a>
+
+    		<a href="{:url('shops/add')}" class="actionBtn add">增加商铺</a>
+
+    		商铺列表
+
+    	</h3>
+
+    	<div class="filter">
+
+	    	<form action="" method="get">
+				<input type="text" name="name" class="inpMain" size=20 value="{$name}" placeholder="商铺名称">
+
+				<input  class="btnGray" type="submit" value="搜索" />
+
+	    	</form>
+
+	    </div>
+        {if count($lists)}
+    	<table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
+
+			<tr>
+
+			 <th align="center">店铺名称</th>
+
+			 <th  align="center">店主账号</th>
+
+			 <th align="center">卖家账号</th>
+
+			 <th align="center">进驻日期</th>
+
+			<th align="center">状态</th>
+			 <th width=100 align="center">操作</th>
+
+			</tr>
+            
+				{volist name="lists" id="vo"}
+
+					<tr>
+
+						<td>{$vo.name}</td>
+
+						<td align="center">{$vo.username}</td>
+
+						<td align="center">{$vo.sellername}</td>
+
+						<td align="center"><?php echo date('Y-m-d',$vo['addtime']) ?></td>
+
+						<td align="center">{if $vo['state']}开启{else}关闭{/if}</td>
+						<td align="center">
+
+							<a href="{:url('shops/edit',array('id'=>$vo.id))}" title='编辑商铺'><img src="__ASSETS__images/edit.png" alt=""></a>
+
+							<a onclick="return confirm('此操作不可恢复，确定删除吗？')" href="{:url('shops/del',array('id'=>$vo.id))}" title='删除商铺'><img src="__ASSETS__images/delete.png" alt=""></a>
+
+						</td>
+
+					</tr>
+
+				{/volist}
+			
+
+    	</table>
+        {else}
+             <p>暂无信息</p>        
+        {/if}
+    	<div class="pages">
+
+			{$lists->render()}
+
+    	</div>
+
+    </div>
+
+</div>

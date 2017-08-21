@@ -1,0 +1,42 @@
+{layout name="layout"}
+<style>
+	.tableBasic td,.tableBasic th{
+		text-align: center;
+	}
+</style>
+<div id="dcMain">
+	<div id="urHere">
+		后台管理中心<b>></b><strong>用户管理</strong>
+	</div>
+	<div id="manager" class="mainBox" style="height:auto!important;height:550px;min-height:550px;">
+    	<h3>
+    		<a href="{:url('admin/member/index')}" class="actionBtn">用户列表</a>
+    		<a href="{:url('admin/member/addUser')}" class="actionBtn add">添加用户</a>
+    		用户管理
+    	</h3>
+    	<table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
+			<tr>
+			 <th align="left">用户名称</th>
+			 <th align="center">添加时间</th>
+			 <th  align="center">登录次数</th>
+			 <th  align="center">最后登录时间</th>
+			 <th width=100 align="center">操作</th>
+			</tr>
+			{foreach $lists as $k=>$v}
+				<tr>
+					<td>{$v.username}</td>
+					<td>{:date('Y-m-d',$v.regtime)}</td>
+					<td>{$v.logintimes}</td>
+					<td>{if $v.logintime}{:date('Y-m-d',$v.logintime)}{/if}</td>
+					<td>
+						<a href="{:url('member/editMember',array('userid'=>$v.userid))}" title='编辑'><img src="__ASSETS__images/edit.png" alt=""></a>&nbsp;
+						<a href="{:url('member/delMember',array('userid'=>$v.userid))}" title='编辑'><img src="__ASSETS__images/delete.png" alt=""></a>
+					</td>
+				</tr>
+			{/foreach}
+    	</table>
+    	<div class="pages">
+			{$lists->render()}
+    	</div>
+    </div>
+</div>

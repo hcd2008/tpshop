@@ -1,0 +1,41 @@
+<div id="dcMain">
+	<div id="urHere">
+		后台管理中心<b>></b><strong>订单管理</strong>
+	</div>
+	<div id="manager" class="mainBox" style="height:auto!important;height:550px;min-height:550px;">
+    	<h3>
+    		订单列表
+    	</h3>
+    	<div class="filter">
+	    	<form action="" method="get">
+				<input type="text" name="number" class="inpMain" size=20 value="" placeholder="订单编号">
+				<input  class="btnGray" type="submit" value="搜索" />
+	    	</form>
+	    </div>
+    	<table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
+			 <tr>
+         <th width="30px">ID</th>
+         <th>订单编号</th>
+         <th>金额</th>
+         <th>状态</th>
+         <th>支付方式</th>
+         <th>下单时间</th>
+         <th>操作</th>
+       </tr>
+			 {volist name="lists" id="vo"}
+          <tr>
+            <td>{$vo.id}</td>
+            <td>{$vo.number}</td>
+            <td>{$vo.cost}</td>
+            <td>{$statearr[$vo['status']]}</td>
+            <td>{$vo.paymethod}</td>
+            <td><?php if($vo['ordertime']){echo date('Y-m-d H:i:s',$vo['ordertime']);} ?></td>
+            <td></td>
+          </tr>
+       {/volist}
+    	</table>
+    	<div class="pages">
+			{$lists->render()}
+    	</div>
+    </div>
+</div>

@@ -1,0 +1,28 @@
+<div id="dcMain">
+	<div id="urHere">
+		后台管理中心<b>></b><strong>产品分类管理</strong>
+	</div>
+	<div id="manager" class="mainBox" style="height:auto!important;height:550px;min-height:550px;">
+    	<h3>
+    		<a href="{:url('category/index')}" class="actionBtn">分类列表</a>
+    		<a href="{:url('category/add')}" class="actionBtn add">增加分类</a>
+    		增加分类
+    	</h3>
+    	<form action="" method="post">
+	    	<table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
+				<tr>
+					<td width="120px">分类名称 <span class="red">*</span></td>
+					<td><input type="text" name="name" size=60 class="inpMain"></td>
+				</tr>
+				<tr>
+					<td>排序 <span class="red">*</span></td>
+					<td><input type="text" name="paixu" value="100" size=60 class="inpMain"></td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><input type="submit" class="btn" value="提交"></td>
+				</tr>
+	    	</table>
+    	</form>
+    </div>
+</div>

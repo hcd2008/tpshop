@@ -1,0 +1,37 @@
+{layout name="layout"}
+<style>
+	.tableBasic td,.tableBasic th{
+		text-align: center;
+	}
+</style>
+<div id="dcMain">
+	<div id="urHere">
+		后台管理中心<b>></b><strong>用户管理</strong>
+	</div>
+	<div id="manager" class="mainBox" style="height:auto!important;height:550px;min-height:550px;">
+    	<h3>
+    		用户列表
+    	</h3>
+    	<table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
+			<tr>
+			 <th align="left">用户名称</th>
+			 <th align="center">手机号</th>
+			 <th  align="center">收货人姓名</th>
+			 <th  align="center">收货人手机</th>
+			 <th  align="center">收货地址</th>
+			</tr>
+			{foreach $lists as $k=>$v}
+				<tr>
+					<td>{$v.name}</td>
+					<td>{$v.phone}</td>
+					<td>{$v.shname}</td>
+					<td>{$v.shphone}</td>
+					<td>{$v.address}</td>
+				</tr>
+			{/foreach}
+    	</table>
+    	<div class="pages">
+			{$lists->render()}
+    	</div>
+    </div>
+</div>

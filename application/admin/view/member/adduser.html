@@ -1,0 +1,60 @@
+{layout name="layout"}
+<div id="dcMain"> <!-- 当前位置 -->
+	<div id="urHere">
+		后台管理中心<b>></b><strong>添加用户</strong>
+	</div>
+	<div id="manager" class="mainBox" style="height:auto!important;height:550px;min-height:550px;">
+    	<h3>
+    		<a href="{:url('admin/member/index')}" class="actionBtn">用户列表</a>
+    		<a href="{:url('admin/member/addUser')}" class="actionBtn add">添加用户</a>
+    		添加用户
+    	</h3>
+    	<form action="" method="post">
+	    	<table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
+				<tr>
+				 	<td width="120px">用户名&nbsp;<span class="red">*</span></td>
+				 	<td><input type="text" size=60 class="inpMain" name="username">
+						&nbsp;4-20位字符串
+				 	</td>
+				</tr>
+				<tr>
+					<td>密码</td>
+					<td><input type="password" size=60 class="inpMain" name="password">
+						&nbsp;设置初始密码，默认密码为foodmate123
+					</td>
+				</tr>
+				<tr>
+					<td>真实姓名</td>
+					<td><input type="text" size=60 class="inpMain" name="truename"></td>
+				</tr>
+				<tr>
+					<td>角色&nbsp;<span class="red">*</span></td>
+					<td>
+						<select name="roleid" id="">
+							<option value="0">--选择角色--</option>
+							{foreach $rolelist as $k=>$v}
+								<option value="{$v.id}">{$v.name}</option>
+							{/foreach}
+						</select>
+						
+					</td>
+				</tr>
+				<tr>
+					<td>手机号</td>
+					<td><input type="text" size=60 class="inpMain" name="mobile"></td>
+				</tr>
+				<tr>
+					<td>固定电话</td>
+					<td><input type="text" size=60 class="inpMain" name="phone"></td>
+				</tr>
+				<tr>
+					<td>邮箱</td>
+					<td><input type="text" size=60 class="inpMain" name="email"></td>
+				</tr>
+				<tr>
+					<td colspan="2"><input type="submit" class="btn" value="提交"></td>
+				</tr>
+	    	</table>
+    	</form>
+    </div>
+</div>
