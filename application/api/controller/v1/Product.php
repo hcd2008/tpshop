@@ -24,7 +24,7 @@ class Product
         if(!$products){
             throw new ProductException();
         }
-        return $products;
+        return json($products);
     }
 
     public function getAllInCategory($id){
@@ -35,7 +35,7 @@ class Product
                 if(!$products){
                     throw new ProductException();
                 }
-                return $products;
+               return json($products);
         }
     }
     //商品详情接口
@@ -45,7 +45,7 @@ class Product
                 if(!$product){
                     throw new ProductException();
                 }
-                return $product;
+                return json($product);
         }
     }
 
