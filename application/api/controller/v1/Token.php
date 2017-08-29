@@ -18,13 +18,14 @@ use app\api\service\Token as TokenService;
 class Token
 {
     public function getToken($code=''){
-        (new TokenGet())->goCheck();
+        // (new TokenGet())->goCheck();
 
-            $ut = new UserToken($code);
-            $token = $ut->get();
-            return [
-                'token'=>$token
-            ];
+        //     $ut = new UserToken($code);
+        //     $token = $ut->get();
+        //     return [
+        //         'token'=>$token
+        //     ];
+        return 11;
     }
 
     public function verifyToken($token='')

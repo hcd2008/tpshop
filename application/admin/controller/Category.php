@@ -26,6 +26,17 @@
 				isset($param['name']) or $this->error('分类名不能为空');
 				$param['update_time']=time();
 				$param['userid']=$this->_userid;
+				$file=$this->request->file('img');
+				if($file){
+					$info=$file->validate(['ext'=>'jpg,png,gif'])->move(ROOT_PATH . DS . 'uploads');
+					if($info){
+						$param['img']=$info->getSaveName();
+					}else{
+						echo $file->getError();
+					}
+				}else{
+					$this->error('请上传分类图片');
+				}
 				$res=Db::table('category')->insert($param);
 				if($res){
 					$this->success('添加分类成功');
@@ -47,6 +58,16 @@
 			$param=$this->request->param();
 
 			if($this->request->isPost()){
+
+				$file=$this->request->file('img');
+				if($file){
+					$info=$file->validate(['ext'=>'jpg,png,gif'])->move(ROOT_PATH . DS . 'uploads');
+					if($info){
+						$param['img']=$info->getSaveName();
+					}else{
+						echo $file->getError();
+					}
+				}
 				$res=Db::table('category')->update($param);
 				if($res){
 					$this->success('编辑分类成功');

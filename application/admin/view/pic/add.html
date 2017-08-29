@@ -1,0 +1,63 @@
+<div id="dcMain">
+	<div id="urHere">
+		后台管理中心<b>></b><strong>首页大图管理</strong>
+	</div>
+	<div id="manager" class="mainBox" style="height:auto!important;height:550px;min-height:550px;">
+    	<h3>
+    		<a href="{:url('pic/index')}" class="actionBtn">首页大图列表</a>
+    		<a href="{:url('pic/add')}" class="actionBtn add">增加首页大图</a>
+    		增加首页大图
+    	</h3>
+    	<form action="" enctype="multipart/form-data" method="post">
+	    	<table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
+	 
+				<tr>
+					<td width="140">首页大图名称：<span class="red">*</span></td>
+					<td><input type="text" class="inpMain" size="100" name="title"  > </td>
+				</tr>
+				<tr>
+
+					<td width="140">首页大图图片：<span class="red">*</span></td>
+
+					<td>
+						<input type="file" name="img" /> (请注意图片尺寸)
+
+					</td>
+					<tr>
+
+						<td width="140">关联产品ID：</td>
+
+						<td><input type="text" class="inpMain" size="50" name="pid" > (请填写关联的产品id)</td>
+
+					</tr>
+					
+					<tr>
+
+						<td width="140">排序：</td>
+
+						<td><input type="text" class="inpMain" size="50" name="paixu" value=100 > </td>
+
+					</tr>
+					<tr>
+
+						<td width="140">状态：</td>
+
+						<td>
+
+							<input type="radio" name="state"  value=1 checked>显示&nbsp;&nbsp;<input type="radio" name="state" value=0 >隐藏
+
+						</td>
+
+					</tr>
+
+				</tr>
+				
+				
+				<tr>
+					<td></td>
+					<td><input type="submit" value="提交" class="btn"></td>
+				</tr>
+	    	</table>
+    	</form>
+    </div>
+</div>

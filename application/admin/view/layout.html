@@ -49,7 +49,7 @@
 
 
  <ul>
-
+    <li {if $controller=='Pic'}class="cur"{/if}><a href="{:url('pic/index')}"><i class="page"></i><em>首页大图管理</em></a></li>
     <li {if $controller=='Category'}class="cur"{/if}><a href="{:url('category/index')}"><i class="productCat"></i><em>产品分类管理</em></a></li>
 
     <li {if $controller=='Product'}class="cur"{/if}><a href="{:url('product/index')}"><i class="product"></i><em>产品管理</em></a></li>

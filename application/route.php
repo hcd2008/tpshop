@@ -25,7 +25,7 @@
     //Route::post('hello/:id','sample/test/hello');
 
      //Banner部分                                   //模块/控制器/方法名
-    Route::get('api/:version/banner/:id','api/:version.Banner/getBanner');
+    Route::get('api/:version/banner','api/:version.Banner/getBanner');
     //主题部分
     Route::get('api/:version/theme','api/:version.Theme/getSimpleList');
     Route::get('api/:version/theme/:id','api/:version.Theme/getComplexOne');
@@ -48,6 +48,8 @@
 
 
     //Token
+    Route::get('api/:version/Token/user','api/:version.Token/getToken');
+
     Route::post('api/:version/Token/user','api/:version.Token/getToken');
 
     //Token 检测Token令牌是否有效

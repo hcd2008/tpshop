@@ -37,6 +37,10 @@
 				foreach ($param as $k => $v) {
 					!empty($v) or $this->error('信息请填写完整');
 				}
+				//验证用户名是否重复
+				if($this->usercheck($param['username'])){
+					$this->error('后台登录名重复,请更改');
+				}
 				$param['password']=md5($param['password']);
 				$param['addtime']=time();
 				$res=Db::table('shops')->insert($param);
@@ -47,6 +51,20 @@
 				}
 			}else{
 				return $this->fetch();
+			}
+		}
+		/**
+		 * 用户名是否重复检测
+		 * @Author   黄传东
+		 * @DateTime 2017-08-25T10:26:38+0800
+		 * @return   [type]                   [description]
+		 */
+		public function usercheck($username){
+			$info=Db::table('shops')->where('username',$username)->count();
+			if($info){
+				return true;
+			}else{
+				return false;
 			}
 		}
 		/**
@@ -65,6 +83,12 @@
 					unset($param['password']);
 				}else{
 					$param['password']=md5($param['password']);
+				}
+				$res=Db::table('shops')->update($param);
+				if($res){
+					$this->success('修改商铺信息成功');
+				}else{
+					$this->error('修改商铺信息失败');
 				}
 			}else{
 				$info=Db::table('shops')->where('id',$param['id'])->find();

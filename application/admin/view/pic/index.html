@@ -1,0 +1,71 @@
+<div id="dcMain">
+
+	<div id="urHere">
+
+		后台管理中心<b>></b><strong>首页大图管理</strong>
+
+	</div>
+
+	<div id="manager" class="mainBox" style="height:auto!important;height:550px;min-height:550px;">
+
+    	<h3>
+
+    		<a href="{:url('pic/index')}" class="actionBtn">首页大图列表</a>
+
+    		<a href="{:url('pic/add')}" class="actionBtn add">增加首页大图</a>
+
+    		首页大图列表
+
+    	</h3>
+
+
+    	<table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
+
+			<tr>
+
+			 <th align="center" width="50">ID</th>
+
+			<th align="center">名称</th>
+			 <th width="440px" align="center">首页图片</th>
+
+
+			 <th  align="center">关联产品</th>
+
+			 <th align="center">排序</th>
+
+			 <th align="center">状态</th>
+			 <th width=100 align="center">操作</th>
+
+			</tr>
+
+			{volist name="lists" id="vo"}
+
+				<tr>
+					<td align="center">{$vo.id}</td>
+					<td>{$vo.title}</td>
+
+					<td align="center"><img width="400px" src="/uploads/{$vo.img}" alt=""></td>
+
+					<td align="center">{$vo.pid}</td>
+
+					<td align="center">{$vo.paixu}</td>
+
+					<td align="center">{if $vo['state']}显示{else}隐藏{/if}</td>
+					<td align="center">
+
+						<a href="{:url('pic/edit',array('id'=>$vo.id))}" title='编辑首页大图'><img src="__ASSETS__images/edit.png" alt=""></a>
+
+						<a onclick="return confirm('此操作不可恢复，确定删除吗？')" href="{:url('pic/del',array('id'=>$vo.id))}" title='删除首页大图'><img src="__ASSETS__images/delete.png" alt=""></a>
+
+					</td>
+
+				</tr>
+
+			{/volist}
+
+    	</table>
+
+
+    </div>
+
+</div>

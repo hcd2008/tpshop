@@ -7,7 +7,7 @@
  */
 
     return[
-        'img_prefix' =>'http://www.tpshopapi.com/images',
+        // 'img_prefix' =>'http://www.tpshopapi.com/images',
         'token_expire_in' =>7200
     ];
 
