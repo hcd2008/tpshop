@@ -1,0 +1,100 @@
+<div id="dcMain">
+	<script>
+		$(function(){
+			$("#fenlei").change(function(){
+				var zhi=$(this).val();
+				var name=$("#name").val();
+				if(name==''){
+					alert('请填写产品名称');
+					return false;
+				}
+				var url='?catid='+zhi+'&name='+name;
+				window.location.href =url;
+			})
+		})
+	</script>
+	<div id="urHere">
+		后台管理中心<b>></b><strong>产品管理</strong>
+	</div>
+	<div id="manager" class="mainBox" style="height:auto!important;height:550px;min-height:550px;">
+    	<h3>
+    		<a href="{:url('product/index')}" class="actionBtn">产品列表</a>
+    		<a href="{:url('product/add')}" class="actionBtn add">增加产品</a>
+    		增加产品
+    	</h3>
+    	<form action="" enctype="multipart/form-data" method="post">
+	    	<table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
+	    		<tr>
+					<td width="140">产品分类：<span class="red">*</span></td>
+					<td>
+						<select name="catid" >
+			    			<option value="0">--选择分类--</option>
+							{volist name='catinfo' id="vo"}
+								<option value="{$vo.id}">{$vo.name}</option>
+							{/volist}
+		    			</select>
+					</td>
+				</tr>
+				<tr>
+					<td width="140">产品名称：<span class="red">*</span></td>
+					<td><input type="text" class="inpMain" size="100" name="name"  > </td>
+				</tr>
+				<tr>
+					<td width="140">产品短标题：</td>
+					<td><input type="text" class="inpMain" size="100" name="desc"  > </td>
+				</tr>
+				<tr>
+					<td width="140">产品图片：</td>
+					<td>
+						<input type="file" name="imgs[]" /> <br> 
+						<input type="file" name="imgs[]" /> <br> 
+						<input type="file" name="imgs[]" /> <br> 
+						(第一张图将作为产品图片)
+					</td>
+				</tr>
+				<tr>
+					<td width="140">产品单价：</td>
+					<td><input type="text" class="inpMain" size="100" name="price"  > </td>
+				</tr>
+				<tr>
+					<td width="140">产品库存：</td>
+					<td><input type="text" class="inpMain" size="100" name="stock"  > </td>
+				</tr>
+				<tr>
+					<td width="140">已出售数量：</td>
+					<td><input type="text" class="inpMain" size="100" name="sold"  > </td>
+				</tr>
+				<tr>
+					<td width="140">上架状态：</td>
+					<td>
+						<input type="radio" name="state" value=1 checked>上架&nbsp;&nbsp;<input type="radio" name="state" value=0 >下架
+					</td>
+				</tr>
+				<tr>
+					<td width="140">产品详情：</td>
+					<td>
+						<!-- 加载编辑器的容器 -->
+						<script id="container" name="content" type="text/plain">
+						    
+						</script>
+						<!-- 配置文件 -->
+						<script type="text/javascript" src="__ASSETS__ueditor/ueditor.config.js"></script>
+						<!-- 编辑器源码文件 -->
+						<script type="text/javascript" src="__ASSETS__ueditor/ueditor.all.js"></script>
+						<!-- 实例化编辑器 -->
+						<script type="text/javascript">
+						    var ue = UE.getEditor('container',{
+						    	initialFrameWidth:700
+						    });
+
+						</script>
+					</td>
+				</tr>
+				<tr>
+					<td></td>
+					<td><input type="submit" value="提交" class="btn"></td>
+				</tr>
+	    	</table>
+    	</form>
+    </div>
+</div>

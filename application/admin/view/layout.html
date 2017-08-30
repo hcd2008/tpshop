@@ -56,6 +56,7 @@
 
     <li {if $controller=='Order'}class="cur"{/if}><a href="{:url('order/index')}"><i class="page"></i><em>订单管理</em></a></li>
     {if $Think.session.gly==1}<li {if $controller=='Shops'}class="cur"{/if}><a href="{:url('shops/index')}"><i class="theme"></i><em>商铺管理</em></a></li>{/if}
+    <li {if $controller=='Demand'}class="cur"{/if}><a href="{:url('demand/index')}"><i class="article"></i><em>预约留言管理</em></a></li>
 
     <li {if $controller=='User'}class="cur"{/if}><a href="{:url('User/index')}"><i class="manager"></i><em>用户管理</em></a></li>
 

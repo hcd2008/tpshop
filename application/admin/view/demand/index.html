@@ -1,0 +1,76 @@
+<div id="dcMain">
+
+	<div id="urHere">
+
+		后台管理中心<b>></b><strong>预约留言管理</strong>
+
+	</div>
+
+	<div id="manager" class="mainBox" style="height:auto!important;height:550px;min-height:550px;">
+
+    	<h3>
+
+    		<a href="{:url('demand/index')}" class="actionBtn">预约留言列表</a>
+
+
+    		预约留言列表
+
+    	</h3>
+
+
+    	<table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
+
+			<tr>
+
+			 <th align="left">姓名</th>
+
+			 <th align="center">手机号</th>
+
+
+			 <th  align="center">地址</th>
+
+			 <th align="center">需求</th>
+
+			<th align="center">状态</th>
+			<th align="center">添加时间</th>
+			 <th width=100 align="center">操作</th>
+
+			</tr>
+
+			{volist name="lists" id="vo"}
+
+				<tr>
+
+					<td>{$vo.name}</td>
+
+					<td align="center">{$vo.phone}</td>
+
+					<td align="center">{$vo.address}</td>
+
+					<td align="center">{$vo.content}</td>
+
+					<td align="center">{if $vo['state']}<span style="color:green">已处理</span>{else}<span style="color:red">未处理</span>{/if}</td>
+					<td align="center"><?php echo date('Y-m-d H:i:s',$vo['addtime']) ?></td>
+					<td align="center">
+						{if $vo.state==0}
+						<a onclick="return confirm('确定将此条信息设置为已处理吗？')" href="{:url('demand/edit',array('id'=>$vo.id))}" title='设置为已处理'><img src="__ASSETS__images/edit.png" alt=""></a>
+						{/if}
+						<a onclick="return confirm('此操作不可恢复，确定删除吗？')" href="{:url('demand/del',array('id'=>$vo.id))}" title='删除预约留言'><img src="__ASSETS__images/delete.png" alt=""></a>
+
+					</td>
+
+				</tr>
+
+			{/volist}
+
+    	</table>
+
+    	<div class="pages">
+
+			{$lists->render()}
+
+    	</div>
+
+    </div>
+
+</div>
