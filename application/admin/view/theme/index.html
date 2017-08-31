@@ -1,0 +1,56 @@
+<div id="dcMain">
+
+	<div id="urHere">
+
+		后台管理中心<b>></b><strong>主题管理</strong>
+
+	</div>
+
+	<div id="manager" class="mainBox" style="height:auto!important;height:550px;min-height:550px;">
+
+    	<h3>
+
+    		<a href="{:url('theme/index')}" class="actionBtn">主题列表</a>
+
+    		<a href="{:url('theme/add')}" class="actionBtn add">增加主题</a>
+
+    		主题列表
+
+    	</h3>
+
+    	<table width="100%" border="0" cellpadding="8" cellspacing="0" class="tableBasic">
+
+			<tr>
+
+			 <th align="left">主题名称</th>
+
+			<th>描述</th>
+			<th width=100 align="center">操作</th>
+
+			</tr>
+
+			{volist name="lists" id="vo"}
+
+				<tr>
+
+					<td>{$vo.name}</td>
+
+					<td>{$vo.description}</td>
+
+					<td align="center">
+
+						<a href="{:url('theme/edit',array('id'=>$vo.id))}" title='编辑主题'><img src="__ASSETS__images/edit.png" alt=""></a>
+
+						<a onclick="return confirm('此操作不可恢复，确定删除吗？')" href="{:url('theme/del',array('id'=>$vo.id))}" title='删除主题'><img src="__ASSETS__images/delete.png" alt=""></a>
+
+					</td>
+
+				</tr>
+
+			{/volist}
+
+    	</table>
+
+    </div>
+
+</div>

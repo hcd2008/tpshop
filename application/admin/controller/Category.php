@@ -75,10 +75,16 @@
 					$this->error('编辑分类失败');
 				}
 			}else{
-				$id=$param['id'];
-				$info=Db::table('category')->where('id',$id)->find();
-				$this->assign('info',$info);
-				return $this->fetch();
+				$map['id']=$param['id'];
+				$map['userid']=$this->_userid;
+				$info=Db::table('category')->where($map)->find();
+				if($info){
+					$this->assign('info',$info);
+					return $this->fetch();
+				}else{
+					$this->error('非法访问');
+				}
+				
 			}
 		}
 		/**
@@ -91,6 +97,9 @@
 		public function del(){
 			$param=$this->request->param();
 			isset($param['id']) or $this->error('非法访问');
+			if(!$this-> usercheck($param['id'])){
+				$this->error('没有权限，非法访问');
+			}
 			$arr['status']=0;
 			$info=Db::table('product')->where('id',$param['id'])->count();
 			if($info>0){
@@ -104,6 +113,27 @@
 				$this->error('删除分类失败');
 			}
 		}
+		/**
+		 * 权限判断
+		 * @Author   黄传东
+		 * @DateTime 2017-08-31T08:53:16+0800
+		 * @return   [type]                   [description]
+		 */
+		public function usercheck($id){
+			if($this->_gly==0){
+				$map['id']=$id;
+				$map['userid']=$this->_userid;
+				$res=Db::table('category')->where($map)->count();
+				if($res){
+					return true;
+				}else{
+					return false;
+				}
+			}else{
+				return true;
+			}
+		}
+		
 	}
 
 ?>

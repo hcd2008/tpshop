@@ -1,7 +1,7 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : 本地连接
+Source Server         : localhost
 Source Server Version : 50553
 Source Host           : localhost:3306
 Source Database       : tpshop
@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50553
 File Encoding         : 65001
 
-Date: 2017-08-21 00:09:53
+Date: 2017-08-30 17:25:10
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -39,22 +39,27 @@ INSERT INTO `banner` VALUES ('1', '首页置顶', '首页轮播图', null, null)
 DROP TABLE IF EXISTS `banner_item`;
 CREATE TABLE `banner_item` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `img_id` int(11) NOT NULL COMMENT '外键，关联image表',
-  `key_word` varchar(100) NOT NULL COMMENT '执行关键字，根据不同的type含义不同',
-  `type` tinyint(4) NOT NULL DEFAULT '1' COMMENT '跳转类型，可能导向商品，可能导向专题，可能导向其他。0，无导向；1：导向商品;2:导向专题',
-  `delete_time` int(11) DEFAULT NULL,
-  `banner_id` int(11) NOT NULL COMMENT '外键，关联banner表',
+  `title` varchar(50) CHARACTER SET utf8 DEFAULT NULL COMMENT '名称',
+  `img` varchar(200) CHARACTER SET utf8 DEFAULT NULL COMMENT '图片地址',
+  `state` tinyint(1) NOT NULL DEFAULT '1' COMMENT '状态1正常 0隐藏',
+  `userid` int(10) unsigned NOT NULL COMMENT '用户id',
+  `pid` int(10) unsigned DEFAULT NULL COMMENT '关联的产品id',
   `update_time` int(11) DEFAULT NULL,
+  `paixu` int(10) unsigned DEFAULT '100' COMMENT '排序',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COMMENT='banner子项表';
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COMMENT='banner子项表';
 
 -- ----------------------------
 -- Records of banner_item
 -- ----------------------------
-INSERT INTO `banner_item` VALUES ('1', '65', '6', '1', null, '1', null);
-INSERT INTO `banner_item` VALUES ('2', '2', '25', '1', null, '1', null);
-INSERT INTO `banner_item` VALUES ('3', '3', '11', '1', null, '1', null);
-INSERT INTO `banner_item` VALUES ('5', '1', '10', '1', null, '1', null);
+INSERT INTO `banner_item` VALUES ('1', '首页大图', '20170825/5c42a3ee2ab5fb68f60e4132a7276ec1.png', '1', '2', '11', null, '100');
+INSERT INTO `banner_item` VALUES ('2', null, '/banner-2a.png', '1', '2', null, null, '100');
+INSERT INTO `banner_item` VALUES ('3', null, '/banner-3a.png', '1', '2', null, null, '100');
+INSERT INTO `banner_item` VALUES ('5', null, '/banner-1a.png', '1', '2', null, null, '100');
+INSERT INTO `banner_item` VALUES ('6', '小米Mix', '20170829/6d72b3bc6264e2abbfa10b73658cc7fa.jpg', '1', '4', '0', '1503965747', '100');
+INSERT INTO `banner_item` VALUES ('7', '小米笔记本', '20170829/4ac3326159867e5ed42744e62d204c37.jpg', '1', '4', '0', '1503965761', '100');
+INSERT INTO `banner_item` VALUES ('8', '小米电视', '20170829/a3aaf88607a648c000223e5f0b26f41c.jpg', '1', '4', '0', '1503965777', '100');
+INSERT INTO `banner_item` VALUES ('9', '红米手机', '20170829/a8b140bf88bc6f7ca67dd5e930b73b80.jpg', '1', '4', '0', '1503965793', '100');
 
 -- ----------------------------
 -- Table structure for category
@@ -62,47 +67,57 @@ INSERT INTO `banner_item` VALUES ('5', '1', '10', '1', null, '1', null);
 DROP TABLE IF EXISTS `category`;
 CREATE TABLE `category` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `userid` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '用户id',
   `name` varchar(50) NOT NULL COMMENT '分类名称',
   `topic_img_id` int(11) DEFAULT NULL COMMENT '外键，关联image表',
+  `img` varchar(200) CHARACTER SET utf8 DEFAULT NULL COMMENT '分类图片',
   `delete_time` int(11) DEFAULT NULL,
   `description` varchar(100) DEFAULT NULL COMMENT '描述',
   `update_time` int(11) DEFAULT NULL,
   `paixu` int(10) unsigned DEFAULT '100' COMMENT '排序',
   `status` tinyint(1) unsigned DEFAULT '1' COMMENT '状态1正常0已删除',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COMMENT='商品类目';
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COMMENT='商品类目';
 
 -- ----------------------------
 -- Records of category
 -- ----------------------------
-INSERT INTO `category` VALUES ('2', '果味', '6', null, null, null, '100', '1');
-INSERT INTO `category` VALUES ('3', '蔬菜', '5', null, null, null, '100', '1');
-INSERT INTO `category` VALUES ('4', '炒货', '7', null, null, null, '100', '1');
-INSERT INTO `category` VALUES ('5', '点心', '4', null, null, null, '100', '1');
-INSERT INTO `category` VALUES ('6', '粗茶', '8', null, null, null, '100', '1');
-INSERT INTO `category` VALUES ('7', '淡饭', '9', null, null, null, '100', '1');
-INSERT INTO `category` VALUES ('8', '测试分类', null, null, null, '1503133423', '100', '1');
+INSERT INTO `category` VALUES ('2', '2', '果味', '6', '/category-dryfruit.png', null, null, null, '100', '1');
+INSERT INTO `category` VALUES ('3', '2', '蔬菜', '5', '/category-vg.png', null, null, null, '100', '1');
+INSERT INTO `category` VALUES ('4', '2', '炒货', '7', '/category-fry-a.png', null, null, null, '100', '1');
+INSERT INTO `category` VALUES ('5', '2', '点心', '4', '/category-cake.png', null, null, null, '100', '1');
+INSERT INTO `category` VALUES ('6', '2', '粗茶', '8', '/category-tea.png', null, null, null, '100', '1');
+INSERT INTO `category` VALUES ('7', '2', '淡饭', '9', '/category-rice.png', null, null, null, '100', '1');
+INSERT INTO `category` VALUES ('8', '2', '测试分类', null, '20170828/49a4dc273d024a7d790789693904cd39.jpg', null, null, '1503133423', '100', '1');
+INSERT INTO `category` VALUES ('9', '2', '坚果Pro手机', null, '20170828/49a4dc273d024a7d790789693904cd39.jpg', null, null, '1503304996', '111', '1');
+INSERT INTO `category` VALUES ('10', '2', '锤子T2', null, '20170828/49a4dc273d024a7d790789693904cd39.jpg', null, null, '1503305032', '88', '1');
+INSERT INTO `category` VALUES ('11', '2', '坚果手机', null, '20170828/49a4dc273d024a7d790789693904cd39.jpg', null, null, '1503305043', '88', '1');
+INSERT INTO `category` VALUES ('12', '2', '锤子T1', null, '20170828/49a4dc273d024a7d790789693904cd39.jpg', null, null, '1503305053', '100', '1');
+INSERT INTO `category` VALUES ('13', '6', '哈哈哈', null, '20170828/7e6ed0806cdaea3ca970b20eb0c084bc.png', null, null, '1503908988', '100', '1');
+INSERT INTO `category` VALUES ('14', '4', '小米手机', null, '20170829/8317c1e7951cf8a2342c0aab6752892e.jpg', null, null, '1503965832', '100', '1');
+INSERT INTO `category` VALUES ('15', '4', '红米手机', null, '20170829/d8d40b5f6efda68d5b5709654cd0fc6c.jpg', null, null, '1503965870', '100', '1');
+INSERT INTO `category` VALUES ('16', '4', '小米电视', null, '20170829/7f6f6119bc701a9d0f9ce4a8000db47f.jpg', null, null, '1503965907', '100', '1');
 
 -- ----------------------------
--- Table structure for hcd_category
+-- Table structure for demand
 -- ----------------------------
-DROP TABLE IF EXISTS `hcd_category`;
-CREATE TABLE `hcd_category` (
-  `catid` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '分类id',
-  `catname` varchar(100) DEFAULT NULL COMMENT '分类名称',
-  `parentid` int(10) unsigned DEFAULT NULL COMMENT '父分类id如果为0则为一级分类',
-  `paixu` int(10) unsigned DEFAULT '100' COMMENT '排序',
-  `status` tinyint(1) unsigned DEFAULT '1' COMMENT '0已删除 1正常',
-  PRIMARY KEY (`catid`),
-  KEY `排序` (`paixu`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=112 DEFAULT CHARSET=utf8;
+DROP TABLE IF EXISTS `demand`;
+CREATE TABLE `demand` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `userid` int(10) unsigned DEFAULT NULL COMMENT '用户id',
+  `name` varchar(30) DEFAULT NULL COMMENT '用户名',
+  `phone` varchar(20) DEFAULT NULL COMMENT '电话',
+  `address` varchar(100) DEFAULT NULL COMMENT '地址',
+  `content` varchar(200) DEFAULT NULL COMMENT '需求',
+  `addtime` int(10) unsigned DEFAULT NULL COMMENT '添加时间',
+  `state` tinyint(1) unsigned DEFAULT '0' COMMENT '状态0未处理 1已处理',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of hcd_category
+-- Records of demand
 -- ----------------------------
-INSERT INTO `hcd_category` VALUES ('109', '电气配件', null, '100', '0');
-INSERT INTO `hcd_category` VALUES ('110', '机械配件', null, '100', '1');
-INSERT INTO `hcd_category` VALUES ('111', '整机', null, '102', '1');
+INSERT INTO `demand` VALUES ('1', null, '低调的华丽', '13022731091', '烟台市芝罘区港城西大街', '请联系我，我需要装修', '1504080078', '1');
 
 -- ----------------------------
 -- Table structure for hcd_info
@@ -131,190 +146,6 @@ CREATE TABLE `hcd_info` (
 -- Records of hcd_info
 -- ----------------------------
 INSERT INTO `hcd_info` VALUES ('1', '深圳市大脚机械有限公司', 'ShenZhen DaJiao', '大脚机械', 'Dajiao Jixie', '深圳市宝安25区前进一路华丰商务大厦315', 'ShenZhen', '113.734670,23.005360', '文小姐', 'DaJiao0', '0769-22272323', '13902695631', '20170705/588a73edb3f2ce47fefbb25e198ab5a7.jpg', '20170705/8515c00508a658c37958d2298dc994fd.jpg', '<p>大脚机械是深圳市德瑞发电机组联盟有限公司旗下的一款小程序，专注打造专业的机械生产、销售服务平台。</p><p><br/></p><p>此小程序作为演示，详情请联系：13902695631（文小姐）</p><p><br/></p><p><img src=\"/ueditor/php/upload/image/20170705/1499249275142241.jpg\" title=\"1499249275142241.jpg\" alt=\"basicprofile.jpg\"/></p><p><br/></p>');
-
--- ----------------------------
--- Table structure for hcd_member
--- ----------------------------
-DROP TABLE IF EXISTS `hcd_member`;
-CREATE TABLE `hcd_member` (
-  `userid` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '用户id',
-  `username` varchar(40) NOT NULL COMMENT '用户名',
-  `passsalt` varchar(15) NOT NULL COMMENT '随机字符串，用来加密密码',
-  `password` varchar(80) NOT NULL COMMENT '密码',
-  `regtime` int(10) unsigned NOT NULL COMMENT '注册时间',
-  `logintime` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '最后登录时间',
-  `logintimes` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '登录次数',
-  `truename` varchar(20) DEFAULT NULL COMMENT '真实姓名',
-  `email` varchar(20) DEFAULT NULL COMMENT '邮箱',
-  `mobile` varchar(20) DEFAULT NULL COMMENT '手机号',
-  `phone` varchar(20) DEFAULT NULL COMMENT '固定电话',
-  `status` tinyint(1) unsigned NOT NULL DEFAULT '3' COMMENT '用户状态 1已禁用 2待审核3正常',
-  PRIMARY KEY (`userid`),
-  UNIQUE KEY `username` (`username`) USING BTREE
-) ENGINE=MyISAM AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of hcd_member
--- ----------------------------
-INSERT INTO `hcd_member` VALUES ('6', 'admin', 'u1yPvhJU', 'cae7d0e74cbef20a930dba1575f055ee', '1491805726', '0', '0', '管理员', '', '', '', '3');
-
--- ----------------------------
--- Table structure for hcd_product
--- ----------------------------
-DROP TABLE IF EXISTS `hcd_product`;
-CREATE TABLE `hcd_product` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `catid` int(8) DEFAULT NULL,
-  `catinfo` varchar(100) DEFAULT NULL COMMENT '分类说明',
-  `name` varchar(200) DEFAULT NULL COMMENT '产品名称',
-  `desc` varchar(200) DEFAULT NULL COMMENT '短标题',
-  `keyword` varchar(200) DEFAULT NULL COMMENT '关键字',
-  `price` varchar(50) DEFAULT NULL COMMENT '单价',
-  `kucun` int(10) unsigned DEFAULT NULL COMMENT '库存',
-  `sold` int(10) unsigned DEFAULT NULL COMMENT '售出数量',
-  `template` varchar(100) DEFAULT NULL COMMENT '运费模板',
-  `suozaidi` varchar(100) DEFAULT NULL,
-  `state` tinyint(1) unsigned DEFAULT '1' COMMENT '上架1下架0',
-  `content` text COMMENT '商品详情',
-  `paixu` int(10) unsigned DEFAULT '100' COMMENT '排序',
-  `addtime` int(10) unsigned DEFAULT NULL COMMENT '添加时间',
-  `status` tinyint(1) unsigned DEFAULT '1' COMMENT '0已删除1正常',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=50 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of hcd_product
--- ----------------------------
-INSERT INTO `hcd_product` VALUES ('2', '109', '11212', '13213', '121', '1212 1232', '12', '12', '12', '121', '121', '1', '<p>1313啊发发<br/></p>', '100', '1496071030', '0');
-INSERT INTO `hcd_product` VALUES ('3', '109', '11212', '13213', '121', '1212 1232', '12', '12', '12', '啊啊阿布BBC', '121', '1', '<p>1313啊发发<br/></p><p><br/></p><p>						</p>', '100', '1496071080', '0');
-INSERT INTO `hcd_product` VALUES ('4', '109', '', '三菱原装启动安全继电器', '三菱原装启动安全继电器', '三菱 安全', '600', '999', '222', '', '深圳', '1', '<p>发发发发发发<br/></p><p><br/></p><p><br/></p><p>						</p>', '100', '1496073694', '1');
-INSERT INTO `hcd_product` VALUES ('5', '109', '', '4012调速板', '基本全新的调速板，质优价廉，非常超值', '', '6000', '77', '10', '', '北京', '0', null, '100', '1496847400', '1');
-INSERT INTO `hcd_product` VALUES ('6', '110', '', '好产品', '', '', '123', '1', '0', '', '深圳市', '1', '<table width=\"600\"><tbody><tr class=\"firstRow\"><td style=\"padding:0 0 0 0\"><p><span style=\";display:none\">&nbsp;</span></p><p><span style=\";display:none\">&nbsp;</span></p><p><span style=\";display:none\">&nbsp;</span></p>Semi-Annual &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Sale: Up to 50% Off Victoria&#39;s &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Secret Sale &nbsp;·&nbsp; Ends soon Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Deal<p><span style=\";display:none\">&nbsp;</span></p>Free &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Beauty Gift w/ Purchase: Estee Lauder, Clinique &amp; More &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Nordstrom &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Sale &nbsp;·&nbsp; Ends soon Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Deal<p><span style=\";display:none\">&nbsp;</span></p><p><span style=\";display:none\">&nbsp;</span></p>Up to &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 70% Off Nike Clearance Items Kohl&#39;s &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Sale &nbsp;·&nbsp; Ends soon Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Deal<p><span style=\";display:none\">&nbsp;</span></p>Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $25 Restaurant Certificates for Just $2! Restaurant.com &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Code &nbsp;·&nbsp; Ends today Show &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Code<p><span style=\";display:none\">&nbsp;</span></p>Up to &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 70% Off Gifts for DadAmazon &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Sale &nbsp;·&nbsp; Ends soon Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Deal<p><span style=\";display:none\">&nbsp;</span></p>Get 30% &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Off Everything! Tiny &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Prints Code &nbsp;·&nbsp; Ends Jun 13 Show &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Code<p><span style=\";display:none\">&nbsp;</span></p>4 Free &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Burgers &amp; 4 Free Franks + $4.99 Shipping on Orders of $59+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Omaha &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Steaks Sale &nbsp;·&nbsp; Ends soon Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Deal<p><span style=\";display:none\">&nbsp;</span></p>Free &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Medium Fries &amp; Soft Drink w/ Purchase w/ McDonald&#39;s App &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; McDonald&#39;s &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Sale &nbsp;·&nbsp; Ends Jun 11 Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Deal<p><span style=\";display:none\">&nbsp;</span></p>BOGO &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Free Subs! Jersey &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Mike&#39;s Sale &nbsp;·&nbsp; Ends Jun 15 Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Deal<p><span style=\";display:none\">&nbsp;</span></p>Free &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Chips &amp; Regular Fountain Drink w/ Purchase of 8 or 12 in. Sub Quiznos &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Instore Coupon &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;·&nbsp; Ends tomorrow Show &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Coupon<p><span style=\";display:none\">&nbsp;</span></p>Save &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Up to $20 on Select Google Products Best &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Buy Code &nbsp;·&nbsp; Ends soon Show &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Coupon<p><span style=\";display:none\">&nbsp;</span></p>Up to &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 50% Off Your Purchase + Extra 10% Off Hotels.com &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Code &nbsp;·&nbsp; Ends Jun 11 Show &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Code<p><span style=\";display:none\">&nbsp;</span></p>$100 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Off The New Galaxy Tab S3Samsung &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Electronics Sale &nbsp;·&nbsp; Ends Jun 17 Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Deal<p><span style=\";display:none\">&nbsp;</span></p>$20 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Off Your $75+ OrderOneHanesPlace &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Coupon Code &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;·&nbsp; Ends soon Show &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Code<p><span style=\";display:none\">&nbsp;</span></p>Up to &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 50% Off the Summer Sale + Free ShippingCoach &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Code &nbsp;·&nbsp; Ends tomorrow Show &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Code<p><span style=\";display:none\">&nbsp;</span></p>Up to &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 65% Off Phone PlansTPO &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Mobile Sale &nbsp;·&nbsp; Ends soon Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Deal<p><span style=\";display:none\">&nbsp;</span></p>Additional &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 30% Off All Sale ItemsVera &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Bradley Sale &nbsp;·&nbsp; Ends today Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Deal<p><span style=\";display:none\">&nbsp;</span></p>Free &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Emergen-C SampleShop &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Now<p><span style=\";display:none\">&nbsp;</span></p>Free &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Poise Starter Pack Shop &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Now<p><span style=\";display:none\">&nbsp;</span></p>Designer &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Sale! Up to 40% Off Top Brands at Neiman MarcusShop &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Now<p><span style=\";display:none\">&nbsp;</span></p>$67 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Off Kate Spade Cameron Street Crossbody Bag$268.00&nbsp;&nbsp; $201.00 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Shop &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Now<p><span style=\";display:none\">&nbsp;</span></p>Up to &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 24% Off Cuisinart Velocity Blenders$79.95&nbsp;&nbsp; $60.88 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Shop &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Now<p><span style=\";display:none\">&nbsp;</span></p>Today &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Only! Up to 50% Off Women&#39;s Flash SaleSteve &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Madden Sale &nbsp;·&nbsp; Ends today Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Deal<p><span style=\";display:none\">&nbsp;</span></p>25% &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Off + Free Shipping on Personalized Gifts for Dads &amp; Grads &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Things &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Remembered Code &nbsp;·&nbsp; Ends soon Show &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Code<p><span style=\";display:none\">&nbsp;</span></p>25% &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Off Ink &amp; Toner 123inkJets &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Code &nbsp;·&nbsp; Ends Jun 9 Show &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Code<p><span style=\";display:none\">&nbsp;</span></p>Over &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 40% Off 4-Pack of Large Beach Towels$59.99&nbsp;&nbsp; $33.99 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Shop &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Now<p><span style=\";display:none\">&nbsp;</span></p>57% &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Off 3-Wheel Harley Style Kids Ride On Motorcycle$299.99&nbsp;&nbsp; $129.98 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Shop &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Now<p><span style=\";display:none\">&nbsp;</span></p>Want more hand &nbsp; &nbsp; picked deals?</td></tr></tbody></table><p><br/></p><p>						</p>', '100', '1496887231', '1');
-INSERT INTO `hcd_product` VALUES ('7', '111', '电气机械', '调速板', '短标题', '关键字', '212', '12', '2', '对对对', '湖南', '1', null, '100', '1497229683', '1');
-INSERT INTO `hcd_product` VALUES ('8', '111', '好东西需要多介绍22222', '整机销售', '', '', '321', '3232', '0', '', '南京', '1', '<p>1111</p><p>2222</p><p>3333</p><p>4444<br/></p><p><br/></p><p><br/></p><p>\r\n						</p>', '100', '1497232355', '1');
-INSERT INTO `hcd_product` VALUES ('9', '109', '11212', '13213', '121', '1212 1232', '12', '12', '12', '121', '121', '1', '<p>1313啊发发<br/></p>', '100', '1496071030', '0');
-INSERT INTO `hcd_product` VALUES ('10', '109', '11212', '13213', '121', '1212 1232', '12', '12', '12', '啊啊阿布BBC', '121', '1', '<p>1313啊发发<br/></p><p><br/></p><p>						</p>', '100', '1496071080', '0');
-INSERT INTO `hcd_product` VALUES ('11', '109', '', '三菱原装启动安全继电器', '三菱原装启动安全继电器', '三菱 安全', '600', '999', '222', '', '深圳', '1', '<p>发发发发发发<br/></p><p><br/></p><p><br/></p><p>						</p>', '100', '1496073694', '1');
-INSERT INTO `hcd_product` VALUES ('12', '109', '', '4012调速板', '基本全新的调速板，质优价廉，非常超值', '', '6000', '77', '10', '', '北京', '0', '', '100', '1496847400', '1');
-INSERT INTO `hcd_product` VALUES ('13', '110', '', '好产品', '', '', '123', '1', '0', '', '深圳市', '1', '<table width=\"600\"><tbody><tr class=\"firstRow\"><td style=\"padding:0 0 0 0\"><p><span style=\";display:none\">&nbsp;</span></p><p><span style=\";display:none\">&nbsp;</span></p><p><span style=\";display:none\">&nbsp;</span></p>Semi-Annual &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Sale: Up to 50% Off Victoria&#39;s &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Secret Sale &nbsp;¡¤&nbsp; Ends soon Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Deal<p><span style=\";display:none\">&nbsp;</span></p>Free &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Beauty Gift w/ Purchase: Estee Lauder, Clinique &amp; More &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Nordstrom &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Sale &nbsp;¡¤&nbsp; Ends soon Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Deal<p><span style=\";display:none\">&nbsp;</span></p><p><span style=\";display:none\">&nbsp;</span></p>Up to &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 70% Off Nike Clearance Items Kohl&#39;s &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Sale &nbsp;¡¤&nbsp; Ends soon Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Deal<p><span style=\";display:none\">&nbsp;</span></p>Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $25 Restaurant Certificates for Just $2! Restaurant.com &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Code &nbsp;¡¤&nbsp; Ends today Show &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Code<p><span style=\";display:none\">&nbsp;</span></p>Up to &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 70% Off Gifts for DadAmazon &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Sale &nbsp;¡¤&nbsp; Ends soon Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Deal<p><span style=\";display:none\">&nbsp;</span></p>Get 30% &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Off Everything! Tiny &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Prints Code &nbsp;¡¤&nbsp; Ends Jun 13 Show &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Code<p><span style=\";display:none\">&nbsp;</span></p>4 Free &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Burgers &amp; 4 Free Franks + $4.99 Shipping on Orders of $59+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Omaha &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Steaks Sale &nbsp;¡¤&nbsp; Ends soon Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Deal<p><span style=\";display:none\">&nbsp;</span></p>Free &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Medium Fries &amp; Soft Drink w/ Purchase w/ McDonald&#39;s App &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; McDonald&#39;s &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Sale &nbsp;¡¤&nbsp; Ends Jun 11 Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Deal<p><span style=\";display:none\">&nbsp;</span></p>BOGO &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Free Subs! Jersey &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Mike&#39;s Sale &nbsp;¡¤&nbsp; Ends Jun 15 Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Deal<p><span style=\";display:none\">&nbsp;</span></p>Free &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Chips &amp; Regular Fountain Drink w/ Purchase of 8 or 12 in. Sub Quiznos &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Instore Coupon &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;¡¤&nbsp; Ends tomorrow Show &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Coupon<p><span style=\";display:none\">&nbsp;</span></p>Save &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Up to $20 on Select Google Products Best &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Buy Code &nbsp;¡¤&nbsp; Ends soon Show &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Coupon<p><span style=\";display:none\">&nbsp;</span></p>Up to &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 50% Off Your Purchase + Extra 10% Off Hotels.com &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Code &nbsp;¡¤&nbsp; Ends Jun 11 Show &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Code<p><span style=\";display:none\">&nbsp;</span></p>$100 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Off The New Galaxy Tab S3Samsung &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Electronics Sale &nbsp;¡¤&nbsp; Ends Jun 17 Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Deal<p><span style=\";display:none\">&nbsp;</span></p>$20 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Off Your $75+ OrderOneHanesPlace &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Coupon Code &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;¡¤&nbsp; Ends soon Show &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Code<p><span style=\";display:none\">&nbsp;</span></p>Up to &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 50% Off the Summer Sale + Free ShippingCoach &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Code &nbsp;¡¤&nbsp; Ends tomorrow Show &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Code<p><span style=\";display:none\">&nbsp;</span></p>Up to &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 65% Off Phone PlansTPO &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Mobile Sale &nbsp;¡¤&nbsp; Ends soon Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Deal<p><span style=\";display:none\">&nbsp;</span></p>Additional &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 30% Off All Sale ItemsVera &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Bradley Sale &nbsp;¡¤&nbsp; Ends today Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Deal<p><span style=\";display:none\">&nbsp;</span></p>Free &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Emergen-C SampleShop &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Now<p><span style=\";display:none\">&nbsp;</span></p>Free &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Poise Starter Pack Shop &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Now<p><span style=\";display:none\">&nbsp;</span></p>Designer &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Sale! Up to 40% Off Top Brands at Neiman MarcusShop &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Now<p><span style=\";display:none\">&nbsp;</span></p>$67 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Off Kate Spade Cameron Street Crossbody Bag$268.00&nbsp;&nbsp; $201.00 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Shop &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Now<p><span style=\";display:none\">&nbsp;</span></p>Up to &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 24% Off Cuisinart Velocity Blenders$79.95&nbsp;&nbsp; $60.88 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Shop &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Now<p><span style=\";display:none\">&nbsp;</span></p>Today &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Only! Up to 50% Off Women&#39;s Flash SaleSteve &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Madden Sale &nbsp;¡¤&nbsp; Ends today Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Deal<p><span style=\";display:none\">&nbsp;</span></p>25% &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Off + Free Shipping on Personalized Gifts for Dads &amp; Grads &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Things &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Remembered Code &nbsp;¡¤&nbsp; Ends soon Show &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Code<p><span style=\";display:none\">&nbsp;</span></p>25% &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Off Ink &amp; Toner 123inkJets &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Code &nbsp;¡¤&nbsp; Ends Jun 9 Show &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Code<p><span style=\";display:none\">&nbsp;</span></p>Over &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 40% Off 4-Pack of Large Beach Towels$59.99&nbsp;&nbsp; $33.99 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Shop &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Now<p><span style=\";display:none\">&nbsp;</span></p>57% &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Off 3-Wheel Harley Style Kids Ride On Motorcycle$299.99&nbsp;&nbsp; $129.98 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Shop &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Now<p><span style=\";display:none\">&nbsp;</span></p>Want more hand &nbsp; &nbsp; picked deals?</td></tr></tbody></table><p><b', '100', '1496887231', '1');
-INSERT INTO `hcd_product` VALUES ('14', '111', '电气机械', '调速板', '短标题', '关键字', '212', '12', '2', '对对对', '湖南', '1', '', '100', '1497229683', '1');
-INSERT INTO `hcd_product` VALUES ('15', '111', '好东西需要多介绍22222', '整机销售', '', '', '321', '3232', '0', '', '南京', '1', '<p>1111</p><p>2222</p><p>3333</p><p>4444<br/></p><p><br/></p><p><br/></p><p>\r\n						</p>', '100', '1497232355', '1');
-INSERT INTO `hcd_product` VALUES ('16', '109', '11212', '13213', '121', '1212 1232', '12', '12', '12', '121', '121', '1', '<p>1313啊发发<br/></p>', '100', '1496071030', '0');
-INSERT INTO `hcd_product` VALUES ('17', '109', '11212', '13213', '121', '1212 1232', '12', '12', '12', '啊啊阿布BBC', '121', '1', '<p>1313啊发发<br/></p><p><br/></p><p>						</p>', '100', '1496071080', '0');
-INSERT INTO `hcd_product` VALUES ('18', '109', '', '三菱原装启动安全继电器', '三菱原装启动安全继电器', '三菱 安全', '600', '999', '222', '', '深圳', '1', '<p>发发发发发发<br/></p><p><br/></p><p><br/></p><p>						</p>', '100', '1496073694', '1');
-INSERT INTO `hcd_product` VALUES ('19', '109', '', '4012调速板', '基本全新的调速板，质优价廉，非常超值', '', '6000', '77', '10', '', '北京', '0', '', '100', '1496847400', '1');
-INSERT INTO `hcd_product` VALUES ('20', '110', '', '好产品', '', '', '123', '1', '0', '', '深圳市', '1', '<table width=\"600\"><tbody><tr class=\"firstRow\"><td style=\"padding:0 0 0 0\"><p><span style=\";display:none\">&nbsp;</span></p><p><span style=\";display:none\">&nbsp;</span></p><p><span style=\";display:none\">&nbsp;</span></p>Semi-Annual &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Sale: Up to 50% Off Victoria&#39;s &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Secret Sale &nbsp;¡¤&nbsp; Ends soon Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Deal<p><span style=\";display:none\">&nbsp;</span></p>Free &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Beauty Gift w/ Purchase: Estee Lauder, Clinique &amp; More &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Nordstrom &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Sale &nbsp;¡¤&nbsp; Ends soon Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Deal<p><span style=\";display:none\">&nbsp;</span></p><p><span style=\";display:none\">&nbsp;</span></p>Up to &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 70% Off Nike Clearance Items Kohl&#39;s &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Sale &nbsp;¡¤&nbsp; Ends soon Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Deal<p><span style=\";display:none\">&nbsp;</span></p>Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $25 Restaurant Certificates for Just $2! Restaurant.com &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Code &nbsp;¡¤&nbsp; Ends today Show &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Code<p><span style=\";display:none\">&nbsp;</span></p>Up to &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 70% Off Gifts for DadAmazon &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Sale &nbsp;¡¤&nbsp; Ends soon Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Deal<p><span style=\";display:none\">&nbsp;</span></p>Get 30% &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Off Everything! Tiny &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Prints Code &nbsp;¡¤&nbsp; Ends Jun 13 Show &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Code<p><span style=\";display:none\">&nbsp;</span></p>4 Free &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Burgers &amp; 4 Free Franks + $4.99 Shipping on Orders of $59+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Omaha &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Steaks Sale &nbsp;¡¤&nbsp; Ends soon Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Deal<p><span style=\";display:none\">&nbsp;</span></p>Free &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Medium Fries &amp; Soft Drink w/ Purchase w/ McDonald&#39;s App &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; McDonald&#39;s &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Sale &nbsp;¡¤&nbsp; Ends Jun 11 Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Deal<p><span style=\";display:none\">&nbsp;</span></p>BOGO &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Free Subs! Jersey &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Mike&#39;s Sale &nbsp;¡¤&nbsp; Ends Jun 15 Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Deal<p><span style=\";display:none\">&nbsp;</span></p>Free &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Chips &amp; Regular Fountain Drink w/ Purchase of 8 or 12 in. Sub Quiznos &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Instore Coupon &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;¡¤&nbsp; Ends tomorrow Show &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Coupon<p><span style=\";display:none\">&nbsp;</span></p>Save &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Up to $20 on Select Google Products Best &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Buy Code &nbsp;¡¤&nbsp; Ends soon Show &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Coupon<p><span style=\";display:none\">&nbsp;</span></p>Up to &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 50% Off Your Purchase + Extra 10% Off Hotels.com &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Code &nbsp;¡¤&nbsp; Ends Jun 11 Show &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Code<p><span style=\";display:none\">&nbsp;</span></p>$100 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Off The New Galaxy Tab S3Samsung &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Electronics Sale &nbsp;¡¤&nbsp; Ends Jun 17 Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Deal<p><span style=\";display:none\">&nbsp;</span></p>$20 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Off Your $75+ OrderOneHanesPlace &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Coupon Code &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;¡¤&nbsp; Ends soon Show &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Code<p><span style=\";display:none\">&nbsp;</span></p>Up to &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 50% Off the Summer Sale + Free ShippingCoach &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Code &nbsp;¡¤&nbsp; Ends tomorrow Show &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Code<p><span style=\";display:none\">&nbsp;</span></p>Up to &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 65% Off Phone PlansTPO &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Mobile Sale &nbsp;¡¤&nbsp; Ends soon Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Deal<p><span style=\";display:none\">&nbsp;</span></p>Additional &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 30% Off All Sale ItemsVera &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Bradley Sale &nbsp;¡¤&nbsp; Ends today Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Deal<p><span style=\";display:none\">&nbsp;</span></p>Free &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Emergen-C SampleShop &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Now<p><span style=\";display:none\">&nbsp;</span></p>Free &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Poise Starter Pack Shop &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Now<p><span style=\";display:none\">&nbsp;</span></p>Designer &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Sale! Up to 40% Off Top Brands at Neiman MarcusShop &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Now<p><span style=\";display:none\">&nbsp;</span></p>$67 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Off Kate Spade Cameron Street Crossbody Bag$268.00&nbsp;&nbsp; $201.00 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Shop &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Now<p><span style=\";display:none\">&nbsp;</span></p>Up to &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 24% Off Cuisinart Velocity Blenders$79.95&nbsp;&nbsp; $60.88 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Shop &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Now<p><span style=\";display:none\">&nbsp;</span></p>Today &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Only! Up to 50% Off Women&#39;s Flash SaleSteve &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Madden Sale &nbsp;¡¤&nbsp; Ends today Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Deal<p><span style=\";display:none\">&nbsp;</span></p>25% &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Off + Free Shipping on Personalized Gifts for Dads &amp; Grads &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Things &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Remembered Code &nbsp;¡¤&nbsp; Ends soon Show &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Code<p><span style=\";display:none\">&nbsp;</span></p>25% &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Off Ink &amp; Toner 123inkJets &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Code &nbsp;¡¤&nbsp; Ends Jun 9 Show &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Code<p><span style=\";display:none\">&nbsp;</span></p>Over &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 40% Off 4-Pack of Large Beach Towels$59.99&nbsp;&nbsp; $33.99 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Shop &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Now<p><span style=\";display:none\">&nbsp;</span></p>57% &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Off 3-Wheel Harley Style Kids Ride On Motorcycle$299.99&nbsp;&nbsp; $129.98 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Shop &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Now<p><span style=\";display:none\">&nbsp;</span></p>Want more hand &nbsp; &nbsp; picked deals?</td></tr></tbody></table><p><b', '100', '1496887231', '1');
-INSERT INTO `hcd_product` VALUES ('21', '111', '电气机械', '调速板', '短标题', '关键字', '212', '12', '2', '对对对', '湖南', '1', '', '100', '1497229683', '1');
-INSERT INTO `hcd_product` VALUES ('22', '111', '好东西需要多介绍22222', '整机销售', '', '', '321', '3232', '0', '', '南京', '1', '<p>1111</p><p>2222</p><p>3333</p><p>4444<br/></p><p><br/></p><p><br/></p><p>\r\n						</p>', '100', '1497232355', '1');
-INSERT INTO `hcd_product` VALUES ('23', '109', '11212', '13213', '121', '1212 1232', '12', '12', '12', '121', '121', '1', '<p>1313啊发发<br/></p>', '100', '1496071030', '0');
-INSERT INTO `hcd_product` VALUES ('24', '109', '11212', '13213', '121', '1212 1232', '12', '12', '12', '啊啊阿布BBC', '121', '1', '<p>1313啊发发<br/></p><p><br/></p><p>						</p>', '100', '1496071080', '0');
-INSERT INTO `hcd_product` VALUES ('25', '109', '', '三菱原装启动安全继电器', '三菱原装启动安全继电器', '三菱 安全', '600', '999', '222', '', '深圳', '1', '<p>发发发发发发<br/></p><p><br/></p><p><br/></p><p>						</p>', '100', '1496073694', '1');
-INSERT INTO `hcd_product` VALUES ('26', '109', '', '4012调速板', '基本全新的调速板，质优价廉，非常超值', '', '6000', '77', '10', '', '北京', '0', '', '100', '1496847400', '1');
-INSERT INTO `hcd_product` VALUES ('27', '110', '', '好产品', '', '', '123', '1', '0', '', '深圳市', '1', '<table width=\"600\"><tbody><tr class=\"firstRow\"><td style=\"padding:0 0 0 0\"><p><span style=\";display:none\">&nbsp;</span></p><p><span style=\";display:none\">&nbsp;</span></p><p><span style=\";display:none\">&nbsp;</span></p>Semi-Annual &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Sale: Up to 50% Off Victoria&#39;s &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Secret Sale &nbsp;¡¤&nbsp; Ends soon Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Deal<p><span style=\";display:none\">&nbsp;</span></p>Free &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Beauty Gift w/ Purchase: Estee Lauder, Clinique &amp; More &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Nordstrom &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Sale &nbsp;¡¤&nbsp; Ends soon Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Deal<p><span style=\";display:none\">&nbsp;</span></p><p><span style=\";display:none\">&nbsp;</span></p>Up to &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 70% Off Nike Clearance Items Kohl&#39;s &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Sale &nbsp;¡¤&nbsp; Ends soon Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Deal<p><span style=\";display:none\">&nbsp;</span></p>Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $25 Restaurant Certificates for Just $2! Restaurant.com &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Code &nbsp;¡¤&nbsp; Ends today Show &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Code<p><span style=\";display:none\">&nbsp;</span></p>Up to &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 70% Off Gifts for DadAmazon &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Sale &nbsp;¡¤&nbsp; Ends soon Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Deal<p><span style=\";display:none\">&nbsp;</span></p>Get 30% &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Off Everything! Tiny &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Prints Code &nbsp;¡¤&nbsp; Ends Jun 13 Show &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Code<p><span style=\";display:none\">&nbsp;</span></p>4 Free &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Burgers &amp; 4 Free Franks + $4.99 Shipping on Orders of $59+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Omaha &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Steaks Sale &nbsp;¡¤&nbsp; Ends soon Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Deal<p><span style=\";display:none\">&nbsp;</span></p>Free &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Medium Fries &amp; Soft Drink w/ Purchase w/ McDonald&#39;s App &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; McDonald&#39;s &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Sale &nbsp;¡¤&nbsp; Ends Jun 11 Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Deal<p><span style=\";display:none\">&nbsp;</span></p>BOGO &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Free Subs! Jersey &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Mike&#39;s Sale &nbsp;¡¤&nbsp; Ends Jun 15 Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Deal<p><span style=\";display:none\">&nbsp;</span></p>Free &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Chips &amp; Regular Fountain Drink w/ Purchase of 8 or 12 in. Sub Quiznos &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Instore Coupon &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;¡¤&nbsp; Ends tomorrow Show &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Coupon<p><span style=\";display:none\">&nbsp;</span></p>Save &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Up to $20 on Select Google Products Best &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Buy Code &nbsp;¡¤&nbsp; Ends soon Show &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Coupon<p><span style=\";display:none\">&nbsp;</span></p>Up to &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 50% Off Your Purchase + Extra 10% Off Hotels.com &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Code &nbsp;¡¤&nbsp; Ends Jun 11 Show &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Code<p><span style=\";display:none\">&nbsp;</span></p>$100 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Off The New Galaxy Tab S3Samsung &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Electronics Sale &nbsp;¡¤&nbsp; Ends Jun 17 Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Deal<p><span style=\";display:none\">&nbsp;</span></p>$20 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Off Your $75+ OrderOneHanesPlace &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Coupon Code &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;¡¤&nbsp; Ends soon Show &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Code<p><span style=\";display:none\">&nbsp;</span></p>Up to &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 50% Off the Summer Sale + Free ShippingCoach &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Code &nbsp;¡¤&nbsp; Ends tomorrow Show &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Code<p><span style=\";display:none\">&nbsp;</span></p>Up to &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 65% Off Phone PlansTPO &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Mobile Sale &nbsp;¡¤&nbsp; Ends soon Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Deal<p><span style=\";display:none\">&nbsp;</span></p>Additional &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 30% Off All Sale ItemsVera &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Bradley Sale &nbsp;¡¤&nbsp; Ends today Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Deal<p><span style=\";display:none\">&nbsp;</span></p>Free &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Emergen-C SampleShop &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Now<p><span style=\";display:none\">&nbsp;</span></p>Free &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Poise Starter Pack Shop &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Now<p><span style=\";display:none\">&nbsp;</span></p>Designer &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Sale! Up to 40% Off Top Brands at Neiman MarcusShop &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Now<p><span style=\";display:none\">&nbsp;</span></p>$67 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Off Kate Spade Cameron Street Crossbody Bag$268.00&nbsp;&nbsp; $201.00 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Shop &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Now<p><span style=\";display:none\">&nbsp;</span></p>Up to &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 24% Off Cuisinart Velocity Blenders$79.95&nbsp;&nbsp; $60.88 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Shop &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Now<p><span style=\";display:none\">&nbsp;</span></p>Today &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Only! Up to 50% Off Women&#39;s Flash SaleSteve &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Madden Sale &nbsp;¡¤&nbsp; Ends today Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Deal<p><span style=\";display:none\">&nbsp;</span></p>25% &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Off + Free Shipping on Personalized Gifts for Dads &amp; Grads &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Things &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Remembered Code &nbsp;¡¤&nbsp; Ends soon Show &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Code<p><span style=\";display:none\">&nbsp;</span></p>25% &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Off Ink &amp; Toner 123inkJets &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Code &nbsp;¡¤&nbsp; Ends Jun 9 Show &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Code<p><span style=\";display:none\">&nbsp;</span></p>Over &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 40% Off 4-Pack of Large Beach Towels$59.99&nbsp;&nbsp; $33.99 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Shop &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Now<p><span style=\";display:none\">&nbsp;</span></p>57% &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Off 3-Wheel Harley Style Kids Ride On Motorcycle$299.99&nbsp;&nbsp; $129.98 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Shop &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Now<p><span style=\";display:none\">&nbsp;</span></p>Want more hand &nbsp; &nbsp; picked deals?</td></tr></tbody></table><p><b', '100', '1496887231', '1');
-INSERT INTO `hcd_product` VALUES ('28', '111', '电气机械', '调速板', '短标题', '关键字', '212', '12', '2', '对对对', '湖南', '1', '', '100', '1497229683', '1');
-INSERT INTO `hcd_product` VALUES ('29', '111', '好东西需要多介绍22222', '整机销售', '', '', '321', '3232', '0', '', '南京', '1', '<p>1111</p><p>2222</p><p>3333</p><p>4444<br/></p><p><br/></p><p><br/></p><p>\r\n						</p>', '100', '1497232355', '1');
-INSERT INTO `hcd_product` VALUES ('30', '109', '11212', '13213', '121', '1212 1232', '12', '12', '12', '121', '121', '1', '<p>1313啊发发<br/></p>', '100', '1496071030', '0');
-INSERT INTO `hcd_product` VALUES ('31', '109', '11212', '13213', '121', '1212 1232', '12', '12', '12', '啊啊阿布BBC', '121', '1', '<p>1313啊发发<br/></p><p><br/></p><p>						</p>', '100', '1496071080', '0');
-INSERT INTO `hcd_product` VALUES ('32', '109', '', '三菱原装启动安全继电器', '三菱原装启动安全继电器', '三菱 安全', '600', '999', '222', '', '深圳', '1', '<p>发发发发发发<br/></p><p><br/></p><p><br/></p><p>						</p>', '100', '1496073694', '1');
-INSERT INTO `hcd_product` VALUES ('33', '109', '', '4012调速板', '基本全新的调速板，质优价廉，非常超值', '', '6000', '77', '10', '', '北京', '0', '', '100', '1496847400', '1');
-INSERT INTO `hcd_product` VALUES ('34', '110', '', '好产品', '', '', '123', '1', '0', '', '深圳市', '1', '<table width=\"600\"><tbody><tr class=\"firstRow\"><td style=\"padding:0 0 0 0\"><p><span style=\";display:none\">&nbsp;</span></p><p><span style=\";display:none\">&nbsp;</span></p><p><span style=\";display:none\">&nbsp;</span></p>Semi-Annual &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Sale: Up to 50% Off Victoria&#39;s &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Secret Sale &nbsp;¡¤&nbsp; Ends soon Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Deal<p><span style=\";display:none\">&nbsp;</span></p>Free &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Beauty Gift w/ Purchase: Estee Lauder, Clinique &amp; More &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Nordstrom &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Sale &nbsp;¡¤&nbsp; Ends soon Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Deal<p><span style=\";display:none\">&nbsp;</span></p><p><span style=\";display:none\">&nbsp;</span></p>Up to &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 70% Off Nike Clearance Items Kohl&#39;s &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Sale &nbsp;¡¤&nbsp; Ends soon Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Deal<p><span style=\";display:none\">&nbsp;</span></p>Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $25 Restaurant Certificates for Just $2! Restaurant.com &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Code &nbsp;¡¤&nbsp; Ends today Show &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Code<p><span style=\";display:none\">&nbsp;</span></p>Up to &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 70% Off Gifts for DadAmazon &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Sale &nbsp;¡¤&nbsp; Ends soon Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Deal<p><span style=\";display:none\">&nbsp;</span></p>Get 30% &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Off Everything! Tiny &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Prints Code &nbsp;¡¤&nbsp; Ends Jun 13 Show &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Code<p><span style=\";display:none\">&nbsp;</span></p>4 Free &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Burgers &amp; 4 Free Franks + $4.99 Shipping on Orders of $59+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Omaha &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Steaks Sale &nbsp;¡¤&nbsp; Ends soon Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Deal<p><span style=\";display:none\">&nbsp;</span></p>Free &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Medium Fries &amp; Soft Drink w/ Purchase w/ McDonald&#39;s App &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; McDonald&#39;s &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Sale &nbsp;¡¤&nbsp; Ends Jun 11 Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Deal<p><span style=\";display:none\">&nbsp;</span></p>BOGO &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Free Subs! Jersey &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Mike&#39;s Sale &nbsp;¡¤&nbsp; Ends Jun 15 Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Deal<p><span style=\";display:none\">&nbsp;</span></p>Free &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Chips &amp; Regular Fountain Drink w/ Purchase of 8 or 12 in. Sub Quiznos &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Instore Coupon &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;¡¤&nbsp; Ends tomorrow Show &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Coupon<p><span style=\";display:none\">&nbsp;</span></p>Save &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Up to $20 on Select Google Products Best &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Buy Code &nbsp;¡¤&nbsp; Ends soon Show &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Coupon<p><span style=\";display:none\">&nbsp;</span></p>Up to &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 50% Off Your Purchase + Extra 10% Off Hotels.com &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Code &nbsp;¡¤&nbsp; Ends Jun 11 Show &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Code<p><span style=\";display:none\">&nbsp;</span></p>$100 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Off The New Galaxy Tab S3Samsung &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Electronics Sale &nbsp;¡¤&nbsp; Ends Jun 17 Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Deal<p><span style=\";display:none\">&nbsp;</span></p>$20 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Off Your $75+ OrderOneHanesPlace &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Coupon Code &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;¡¤&nbsp; Ends soon Show &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Code<p><span style=\";display:none\">&nbsp;</span></p>Up to &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 50% Off the Summer Sale + Free ShippingCoach &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Code &nbsp;¡¤&nbsp; Ends tomorrow Show &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Code<p><span style=\";display:none\">&nbsp;</span></p>Up to &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 65% Off Phone PlansTPO &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Mobile Sale &nbsp;¡¤&nbsp; Ends soon Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Deal<p><span style=\";display:none\">&nbsp;</span></p>Additional &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 30% Off All Sale ItemsVera &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Bradley Sale &nbsp;¡¤&nbsp; Ends today Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Deal<p><span style=\";display:none\">&nbsp;</span></p>Free &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Emergen-C SampleShop &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Now<p><span style=\";display:none\">&nbsp;</span></p>Free &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Poise Starter Pack Shop &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Now<p><span style=\";display:none\">&nbsp;</span></p>Designer &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Sale! Up to 40% Off Top Brands at Neiman MarcusShop &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Now<p><span style=\";display:none\">&nbsp;</span></p>$67 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Off Kate Spade Cameron Street Crossbody Bag$268.00&nbsp;&nbsp; $201.00 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Shop &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Now<p><span style=\";display:none\">&nbsp;</span></p>Up to &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 24% Off Cuisinart Velocity Blenders$79.95&nbsp;&nbsp; $60.88 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Shop &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Now<p><span style=\";display:none\">&nbsp;</span></p>Today &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Only! Up to 50% Off Women&#39;s Flash SaleSteve &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Madden Sale &nbsp;¡¤&nbsp; Ends today Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Deal<p><span style=\";display:none\">&nbsp;</span></p>25% &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Off + Free Shipping on Personalized Gifts for Dads &amp; Grads &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Things &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Remembered Code &nbsp;¡¤&nbsp; Ends soon Show &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Code<p><span style=\";display:none\">&nbsp;</span></p>25% &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Off Ink &amp; Toner 123inkJets &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Code &nbsp;¡¤&nbsp; Ends Jun 9 Show &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Code<p><span style=\";display:none\">&nbsp;</span></p>Over &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 40% Off 4-Pack of Large Beach Towels$59.99&nbsp;&nbsp; $33.99 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Shop &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Now<p><span style=\";display:none\">&nbsp;</span></p>57% &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Off 3-Wheel Harley Style Kids Ride On Motorcycle$299.99&nbsp;&nbsp; $129.98 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Shop &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Now<p><span style=\";display:none\">&nbsp;</span></p>Want more hand &nbsp; &nbsp; picked deals?</td></tr></tbody></table><p><b', '100', '1496887231', '1');
-INSERT INTO `hcd_product` VALUES ('35', '111', '电气机械', '调速板', '短标题', '关键字', '212', '12', '2', '对对对', '湖南', '1', '', '100', '1497229683', '1');
-INSERT INTO `hcd_product` VALUES ('36', '111', '好东西需要多介绍22222', '整机销售', '', '', '321', '3232', '0', '', '南京', '1', '<p>1111</p><p>2222</p><p>3333</p><p>4444<br/></p><p><br/></p><p><br/></p><p>\r\n						</p>', '100', '1497232355', '1');
-INSERT INTO `hcd_product` VALUES ('37', '109', '11212', '13213', '121', '1212 1232', '12', '12', '12', '121', '121', '1', '<p>1313啊发发<br/></p>', '100', '1496071030', '0');
-INSERT INTO `hcd_product` VALUES ('38', '109', '11212', '13213', '121', '1212 1232', '12', '12', '12', '啊啊阿布BBC', '121', '1', '<p>1313啊发发<br/></p><p><br/></p><p>						</p>', '100', '1496071080', '0');
-INSERT INTO `hcd_product` VALUES ('39', '109', '', '三菱原装启动安全继电器', '三菱原装启动安全继电器', '三菱 安全', '600', '999', '222', '', '深圳', '1', '<p>发发发发发发<br/></p><p><br/></p><p><br/></p><p><br/></p><p>\r\n						</p>', '100', '1496073694', '1');
-INSERT INTO `hcd_product` VALUES ('40', '109', '', '4012调速板', '基本全新的调速板，质优价廉，非常超值', '', '6000', '77', '10', '', '北京', '0', '', '100', '1496847400', '1');
-INSERT INTO `hcd_product` VALUES ('41', '110', '', '好产品', '', '', '123', '1', '0', '', '深圳市', '1', '<table width=\"600\"><tbody><tr class=\"firstRow\"><td style=\"padding:0 0 0 0\"><p><span style=\";display:none\">&nbsp;</span></p><p><span style=\";display:none\">&nbsp;</span></p><p><span style=\";display:none\">&nbsp;</span></p>Semi-Annual &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Sale: Up to 50% Off Victoria&#39;s &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Secret Sale &nbsp;¡¤&nbsp; Ends soon Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Deal<p><span style=\";display:none\">&nbsp;</span></p>Free &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Beauty Gift w/ Purchase: Estee Lauder, Clinique &amp; More &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Nordstrom &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Sale &nbsp;¡¤&nbsp; Ends soon Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Deal<p><span style=\";display:none\">&nbsp;</span></p><p><span style=\";display:none\">&nbsp;</span></p>Up to &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 70% Off Nike Clearance Items Kohl&#39;s &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Sale &nbsp;¡¤&nbsp; Ends soon Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Deal<p><span style=\";display:none\">&nbsp;</span></p>Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; $25 Restaurant Certificates for Just $2! Restaurant.com &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Code &nbsp;¡¤&nbsp; Ends today Show &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Code<p><span style=\";display:none\">&nbsp;</span></p>Up to &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 70% Off Gifts for DadAmazon &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Sale &nbsp;¡¤&nbsp; Ends soon Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Deal<p><span style=\";display:none\">&nbsp;</span></p>Get 30% &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Off Everything! Tiny &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Prints Code &nbsp;¡¤&nbsp; Ends Jun 13 Show &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Code<p><span style=\";display:none\">&nbsp;</span></p>4 Free &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Burgers &amp; 4 Free Franks + $4.99 Shipping on Orders of $59+ &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Omaha &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Steaks Sale &nbsp;¡¤&nbsp; Ends soon Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Deal<p><span style=\";display:none\">&nbsp;</span></p>Free &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Medium Fries &amp; Soft Drink w/ Purchase w/ McDonald&#39;s App &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; McDonald&#39;s &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Sale &nbsp;¡¤&nbsp; Ends Jun 11 Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Deal<p><span style=\";display:none\">&nbsp;</span></p>BOGO &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Free Subs! Jersey &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Mike&#39;s Sale &nbsp;¡¤&nbsp; Ends Jun 15 Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Deal<p><span style=\";display:none\">&nbsp;</span></p>Free &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Chips &amp; Regular Fountain Drink w/ Purchase of 8 or 12 in. Sub Quiznos &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Instore Coupon &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;¡¤&nbsp; Ends tomorrow Show &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Coupon<p><span style=\";display:none\">&nbsp;</span></p>Save &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Up to $20 on Select Google Products Best &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Buy Code &nbsp;¡¤&nbsp; Ends soon Show &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Coupon<p><span style=\";display:none\">&nbsp;</span></p>Up to &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 50% Off Your Purchase + Extra 10% Off Hotels.com &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Code &nbsp;¡¤&nbsp; Ends Jun 11 Show &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Code<p><span style=\";display:none\">&nbsp;</span></p>$100 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Off The New Galaxy Tab S3Samsung &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Electronics Sale &nbsp;¡¤&nbsp; Ends Jun 17 Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Deal<p><span style=\";display:none\">&nbsp;</span></p>$20 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Off Your $75+ OrderOneHanesPlace &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Coupon Code &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;¡¤&nbsp; Ends soon Show &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Code<p><span style=\";display:none\">&nbsp;</span></p>Up to &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 50% Off the Summer Sale + Free ShippingCoach &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Code &nbsp;¡¤&nbsp; Ends tomorrow Show &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Code<p><span style=\";display:none\">&nbsp;</span></p>Up to &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 65% Off Phone PlansTPO &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Mobile Sale &nbsp;¡¤&nbsp; Ends soon Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Deal<p><span style=\";display:none\">&nbsp;</span></p>Additional &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 30% Off All Sale ItemsVera &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Bradley Sale &nbsp;¡¤&nbsp; Ends today Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Deal<p><span style=\";display:none\">&nbsp;</span></p>Free &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Emergen-C SampleShop &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Now<p><span style=\";display:none\">&nbsp;</span></p>Free &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Poise Starter Pack Shop &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Now<p><span style=\";display:none\">&nbsp;</span></p>Designer &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Sale! Up to 40% Off Top Brands at Neiman MarcusShop &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Now<p><span style=\";display:none\">&nbsp;</span></p>$67 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Off Kate Spade Cameron Street Crossbody Bag$268.00&nbsp;&nbsp; $201.00 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Shop &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Now<p><span style=\";display:none\">&nbsp;</span></p>Up to &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 24% Off Cuisinart Velocity Blenders$79.95&nbsp;&nbsp; $60.88 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Shop &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Now<p><span style=\";display:none\">&nbsp;</span></p>Today &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Only! Up to 50% Off Women&#39;s Flash SaleSteve &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Madden Sale &nbsp;¡¤&nbsp; Ends today Get &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Deal<p><span style=\";display:none\">&nbsp;</span></p>25% &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Off + Free Shipping on Personalized Gifts for Dads &amp; Grads &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Things &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Remembered Code &nbsp;¡¤&nbsp; Ends soon Show &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Code<p><span style=\";display:none\">&nbsp;</span></p>25% &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Off Ink &amp; Toner 123inkJets &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Code &nbsp;¡¤&nbsp; Ends Jun 9 Show &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Code<p><span style=\";display:none\">&nbsp;</span></p>Over &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; 40% Off 4-Pack of Large Beach Towels$59.99&nbsp;&nbsp; $33.99 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Shop &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Now<p><span style=\";display:none\">&nbsp;</span></p>57% &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Off 3-Wheel Harley Style Kids Ride On Motorcycle$299.99&nbsp;&nbsp; $129.98 &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Shop &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; Now<p><span style=\";display:none\">&nbsp;</span></p>Want more hand &nbsp; &nbsp; picked deals?</td></tr></tbody></table><p><b', '100', '1496887231', '1');
-INSERT INTO `hcd_product` VALUES ('42', '111', '电气机械', '调速板', '短标题', '关键字', '212', '12', '2', '对对对', '湖南', '1', '', '100', '1497229683', '1');
-INSERT INTO `hcd_product` VALUES ('43', '111', '好东西需要多介绍22222', '整机销售', '', '', '321', '3232', '0', '', '南京', '1', '<p>1111</p><p>2222</p><p>3333</p><p>4444<br/></p><p><img src=\"/ueditor/php/upload/image/20170614/1497432606832469.jpg\" title=\"1497432606832469.jpg\" alt=\"QQ截图20170614103302.jpg\"/><img src=\"/ueditor/php/upload/image/20170614/1497432761139296.gif\" title=\"1497432761139296.gif\" alt=\"file_591167d57945f.gif\"/></p><p><br/></p><p><br/></p><p>\r\n						</p>', '100', '1497232355', '1');
-INSERT INTO `hcd_product` VALUES ('44', '110', '', '重康调速板4914091', '重康4914091', '重康', '750', '24', '31', '18', '广东省东莞市', '1', '<p>产品名称：康明斯调速板</p><p>产品编号：4914091</p><p>其他说明：全新，原厂原包装。</p><p><br/></p><p><span style=\"color: rgb(192, 0, 0);\"><strong>备注：</strong></span></p><p><span style=\"color: rgb(192, 0, 0);\"><strong>以上商品为演示商品，做小程序联系：13902695631（文小姐）</strong></span></p><p><span style=\"color: rgb(192, 0, 0);\"><strong>基础价：RMB5000元</strong></span></p><p><br/></p><p><img src=\"/ueditor/php/upload/image/20170705/1499236475882564.jpg\" title=\"1499236475882564.jpg\" alt=\"微信图片_20170705111704.jpg\" width=\"603\" height=\"453\"/></p><p><br/></p>', '100', '1499236500', '1');
-INSERT INTO `hcd_product` VALUES ('45', '110', '调速板', '美康调速板CE3098693', '美康3098693', '美康', '750', '36', '21', '18', '广东省东莞市', '1', '<p style=\"white-space: normal;\">产品名称：康明斯调速板</p><p style=\"white-space: normal;\">产品编号：3098693</p><p style=\"white-space: normal;\">其他说明：全新，原厂原包装。</p><p style=\"white-space: normal;\"><br/></p><p style=\"white-space: normal;\"><span style=\"color: rgb(192, 0, 0);\"><strong>备注：</strong></span></p><p style=\"white-space: normal;\"><span style=\"color: rgb(192, 0, 0);\"><strong>以上商品为演示商品，做小程序联系：13902695631（文小姐）</strong></span></p><p style=\"white-space: normal;\"><span style=\"color: rgb(192, 0, 0);\"><strong>基础价：RMB5000元</strong></span></p><p><br/></p><p><img src=\"/ueditor/php/upload/image/20170705/1499238768750150.jpg\" title=\"1499238768750150.jpg\" alt=\"微信图片_20170705111710.jpg\" width=\"666\" height=\"480\"/></p>', '100', '1499238792', '1');
-INSERT INTO `hcd_product` VALUES ('46', '110', '调压板', '斯坦福SX440调压板', '斯坦福SX440', '调压板', '580', '43', '56', '18', '广东省东莞市', '1', '<p style=\"white-space: normal;\">产品名称：斯坦福调压板</p><p style=\"white-space: normal;\">产品编号：SX440</p><p style=\"white-space: normal;\">其他说明：全新，原厂无包装。</p><p style=\"white-space: normal;\"><br/></p><p style=\"white-space: normal;\"><span style=\"color: rgb(192, 0, 0);\"><strong>备注：</strong></span></p><p style=\"white-space: normal;\"><span style=\"color: rgb(192, 0, 0);\"><strong>以上商品为演示商品，做小程序联系：13902695631（文小姐）</strong></span></p><p style=\"white-space: normal;\"><span style=\"color: rgb(192, 0, 0);\"><strong>基础价：RMB5000元</strong></span></p><p><span style=\"color: rgb(192, 0, 0);\"><strong><br/></strong></span></p><p><span style=\"color: rgb(192, 0, 0);\"><strong><img src=\"/ueditor/php/upload/image/20170705/1499239042556784.jpg\" title=\"1499239042556784.jpg\" alt=\"微信图片_20170705111659.jpg\" width=\"645\" height=\"540\"/></strong></span></p><p><br/></p>', '100', '1499238982', '1');
-INSERT INTO `hcd_product` VALUES ('47', '110', '调速板', '重康调速板4914090', '重康4914090', '调速板', '650', '42', '47', '18', '广东省东莞市', '1', '<p style=\"white-space: normal;\">产品名称：康明斯调速板</p><p style=\"white-space: normal;\">产品编号：4914090</p><p style=\"white-space: normal;\">其他说明：全新，原厂原包装。</p><p style=\"white-space: normal;\"><br/></p><p style=\"white-space: normal;\"><span style=\"color: rgb(192, 0, 0);\"><strong>备注：</strong></span></p><p style=\"white-space: normal;\"><span style=\"color: rgb(192, 0, 0);\"><strong>以上商品为演示商品，做小程序联系：13902695631（文小姐）</strong></span></p><p style=\"white-space: normal;\"><span style=\"color: rgb(192, 0, 0);\"><strong>基础价：RMB5000元</strong></span></p><p><span style=\"color: rgb(192, 0, 0);\"><strong><br/></strong></span></p><p><img src=\"/ueditor/php/upload/image/20170705/1499239331506857.jpg\" title=\"1499239331506857.jpg\" alt=\"微信图片_20170705152101.jpg\" width=\"674\" height=\"538\"/></p>', '100', '1499239374', '1');
-INSERT INTO `hcd_product` VALUES ('48', '110', 'ASCO 双电源开关', 'ASCO 双电源开关', 'ASCO 双电源开关', '双电源开关', '9766', '3', '1', '39', '广东省东莞市', '1', '<p style=\"white-space: normal;\">产品名称：ASCO 双电源开关</p><p style=\"white-space: normal;\">产品编号：630A-4P</p><p style=\"white-space: normal;\">其他说明：全新，原厂原包装。</p><p style=\"white-space: normal;\"><br/></p><p style=\"white-space: normal;\"><span style=\"color: rgb(192, 0, 0);\"><strong>备注：</strong></span></p><p style=\"white-space: normal;\"><span style=\"color: rgb(192, 0, 0);\"><strong>以上商品为演示商品，做小程序联系：13902695631（文小姐）</strong></span></p><p style=\"white-space: normal;\"><span style=\"color: rgb(192, 0, 0);\"><strong>基础价：RMB5000元</strong></span></p><p><span style=\"color: rgb(192, 0, 0);\"><strong><br/></strong></span></p><p><img src=\"/ueditor/php/upload/image/20170705/1499239582611009.jpg\" title=\"1499239582611009.jpg\" alt=\"2123_1498120687_696.jpg\" width=\"674\" height=\"519\"/></p>', '100', '1499239519', '1');
-INSERT INTO `hcd_product` VALUES ('49', '110', '调速板123123', '美康调速板8270-1029', '美康调速板8270-1029', '调速板', '300', '12', '17', '18', '广东省东莞市', '1', '<p style=\"white-space: normal;\">产品名称：美康调速板</p><p style=\"white-space: normal;\">产品编号：8270-1029</p><p style=\"white-space: normal;\">其他说明：全新，原厂原包装。</p><p style=\"white-space: normal;\"><br/></p><p style=\"white-space: normal;\"><span style=\"color: rgb(192, 0, 0);\"><strong>备注：</strong></span></p><p style=\"white-space: normal;\"><span style=\"color: rgb(192, 0, 0);\"><strong>以上商品为演示商品，做小程序联系：13902695631（文小姐）</strong></span></p><p style=\"white-space: normal;\"><span style=\"color: rgb(192, 0, 0);\"><strong>基础价：RMB5000元</strong></span></p><p><span style=\"color: rgb(192, 0, 0);\"><strong><br/></strong></span></p><p><img src=\"/ueditor/php/upload/image/20170705/1499239786119376.jpg\" title=\"1499239786119376.jpg\" alt=\"微信图片_20170703111011.jpg\" width=\"683\" height=\"855\"/></p><p><br/></p><p><br/></p><p>\r\n						</p>', '100', '1499239737', '1');
-
--- ----------------------------
--- Table structure for hcd_product_img
--- ----------------------------
-DROP TABLE IF EXISTS `hcd_product_img`;
-CREATE TABLE `hcd_product_img` (
-  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
-  `pid` int(10) unsigned NOT NULL COMMENT '产品id',
-  `img` varchar(100) DEFAULT NULL COMMENT '图片',
-  `status` tinyint(1) DEFAULT '1' COMMENT '0已删除1正常',
-  PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=76 DEFAULT CHARSET=utf8;
-
--- ----------------------------
--- Records of hcd_product_img
--- ----------------------------
-INSERT INTO `hcd_product_img` VALUES ('16', '6', '20170608/e5a8a2db63076c4560a284876d5c9b37.gif', '1');
-INSERT INTO `hcd_product_img` VALUES ('15', '4', '20170607/25f5d1ace5586cd824de38d2818f6de9.jpg', '1');
-INSERT INTO `hcd_product_img` VALUES ('14', '4', '20170607/25095bd90ad98f676cf19ef8135be1ce.jpg', '1');
-INSERT INTO `hcd_product_img` VALUES ('13', '4', '20170607/001e19d1b7da6a5a450f4a55c6e82835.jpg', '1');
-INSERT INTO `hcd_product_img` VALUES ('10', '5', '20170607/5bbd439a602951841b6c734027078d14.jpg', '1');
-INSERT INTO `hcd_product_img` VALUES ('11', '5', '20170607/f75a659764f00192d15affe1b2d40be3.jpg', '1');
-INSERT INTO `hcd_product_img` VALUES ('12', '5', '20170607/d5944c6809e25da4026e6b94fb94ed24.jpg', '1');
-INSERT INTO `hcd_product_img` VALUES ('17', '7', '20170612/3d222fc17d1dbe18372ddf8d5ead2beb.png', '1');
-INSERT INTO `hcd_product_img` VALUES ('18', '7', '20170612/7810af0912cc83462ca8865bf6b43334.png', '1');
-INSERT INTO `hcd_product_img` VALUES ('19', '7', '20170612/e80f5ca96789fb04ce33e2319b1f423a.png', '1');
-INSERT INTO `hcd_product_img` VALUES ('20', '8', '20170612/99728735a969bd7e38d10f77d5bcb53d.png', '1');
-INSERT INTO `hcd_product_img` VALUES ('21', '8', '20170612/d46904bd9d76816d1ff6fa5d1aacdfcf.png', '1');
-INSERT INTO `hcd_product_img` VALUES ('22', '9', '20170608/e5a8a2db63076c4560a284876d5c9b37.gif', '1');
-INSERT INTO `hcd_product_img` VALUES ('23', '10', '20170607/25f5d1ace5586cd824de38d2818f6de9.jpg', '1');
-INSERT INTO `hcd_product_img` VALUES ('24', '11', '20170607/25095bd90ad98f676cf19ef8135be1ce.jpg', '1');
-INSERT INTO `hcd_product_img` VALUES ('25', '12', '20170607/001e19d1b7da6a5a450f4a55c6e82835.jpg', '1');
-INSERT INTO `hcd_product_img` VALUES ('26', '13', '20170607/5bbd439a602951841b6c734027078d14.jpg', '1');
-INSERT INTO `hcd_product_img` VALUES ('27', '14', '20170607/f75a659764f00192d15affe1b2d40be3.jpg', '1');
-INSERT INTO `hcd_product_img` VALUES ('28', '15', '20170607/d5944c6809e25da4026e6b94fb94ed24.jpg', '1');
-INSERT INTO `hcd_product_img` VALUES ('29', '16', '20170612/3d222fc17d1dbe18372ddf8d5ead2beb.png', '1');
-INSERT INTO `hcd_product_img` VALUES ('30', '17', '20170612/7810af0912cc83462ca8865bf6b43334.png', '1');
-INSERT INTO `hcd_product_img` VALUES ('31', '18', '20170612/e80f5ca96789fb04ce33e2319b1f423a.png', '1');
-INSERT INTO `hcd_product_img` VALUES ('32', '19', '20170612/99728735a969bd7e38d10f77d5bcb53d.png', '1');
-INSERT INTO `hcd_product_img` VALUES ('33', '20', '20170612/d46904bd9d76816d1ff6fa5d1aacdfcf.png', '1');
-INSERT INTO `hcd_product_img` VALUES ('34', '21', '20170608/e5a8a2db63076c4560a284876d5c9b37.gif', '1');
-INSERT INTO `hcd_product_img` VALUES ('35', '22', '20170607/25f5d1ace5586cd824de38d2818f6de9.jpg', '1');
-INSERT INTO `hcd_product_img` VALUES ('36', '23', '20170607/25095bd90ad98f676cf19ef8135be1ce.jpg', '1');
-INSERT INTO `hcd_product_img` VALUES ('37', '24', '20170607/001e19d1b7da6a5a450f4a55c6e82835.jpg', '1');
-INSERT INTO `hcd_product_img` VALUES ('38', '25', '20170607/5bbd439a602951841b6c734027078d14.jpg', '1');
-INSERT INTO `hcd_product_img` VALUES ('39', '26', '20170607/f75a659764f00192d15affe1b2d40be3.jpg', '1');
-INSERT INTO `hcd_product_img` VALUES ('40', '27', '20170607/d5944c6809e25da4026e6b94fb94ed24.jpg', '1');
-INSERT INTO `hcd_product_img` VALUES ('41', '28', '20170612/3d222fc17d1dbe18372ddf8d5ead2beb.png', '1');
-INSERT INTO `hcd_product_img` VALUES ('42', '29', '20170612/7810af0912cc83462ca8865bf6b43334.png', '1');
-INSERT INTO `hcd_product_img` VALUES ('43', '30', '20170612/e80f5ca96789fb04ce33e2319b1f423a.png', '1');
-INSERT INTO `hcd_product_img` VALUES ('44', '31', '20170612/99728735a969bd7e38d10f77d5bcb53d.png', '1');
-INSERT INTO `hcd_product_img` VALUES ('45', '32', '20170612/d46904bd9d76816d1ff6fa5d1aacdfcf.png', '1');
-INSERT INTO `hcd_product_img` VALUES ('46', '33', '20170608/e5a8a2db63076c4560a284876d5c9b37.gif', '1');
-INSERT INTO `hcd_product_img` VALUES ('47', '34', '20170607/25f5d1ace5586cd824de38d2818f6de9.jpg', '1');
-INSERT INTO `hcd_product_img` VALUES ('48', '35', '20170607/25095bd90ad98f676cf19ef8135be1ce.jpg', '1');
-INSERT INTO `hcd_product_img` VALUES ('49', '36', '20170607/001e19d1b7da6a5a450f4a55c6e82835.jpg', '1');
-INSERT INTO `hcd_product_img` VALUES ('50', '37', '20170607/5bbd439a602951841b6c734027078d14.jpg', '1');
-INSERT INTO `hcd_product_img` VALUES ('51', '38', '20170607/f75a659764f00192d15affe1b2d40be3.jpg', '1');
-INSERT INTO `hcd_product_img` VALUES ('52', '39', '20170607/d5944c6809e25da4026e6b94fb94ed24.jpg', '0');
-INSERT INTO `hcd_product_img` VALUES ('53', '40', '20170612/3d222fc17d1dbe18372ddf8d5ead2beb.png', '1');
-INSERT INTO `hcd_product_img` VALUES ('54', '41', '20170612/7810af0912cc83462ca8865bf6b43334.png', '1');
-INSERT INTO `hcd_product_img` VALUES ('55', '42', '20170612/e80f5ca96789fb04ce33e2319b1f423a.png', '0');
-INSERT INTO `hcd_product_img` VALUES ('56', '43', '20170612/99728735a969bd7e38d10f77d5bcb53d.png', '0');
-INSERT INTO `hcd_product_img` VALUES ('57', '39', '20170614/9d9ab5b3ee17a28d2d2b0533c42b81f3.jpg', '1');
-INSERT INTO `hcd_product_img` VALUES ('58', '39', '20170614/6b414c2b18ab41ea6eacafc9557d9695.gif', '1');
-INSERT INTO `hcd_product_img` VALUES ('59', '43', '20170614/e746227258c85a21042a1d28081b500e.jpg', '1');
-INSERT INTO `hcd_product_img` VALUES ('60', '43', '20170614/b8e755de84edb745e340108d87adca7a.gif', '1');
-INSERT INTO `hcd_product_img` VALUES ('61', '44', '20170705/a0b907c0f9f7eb6a9f39871d7a8b24a0.jpg', '1');
-INSERT INTO `hcd_product_img` VALUES ('62', '44', '20170705/bcbe2f661a39276bfa2449e138d15b2f.jpg', '1');
-INSERT INTO `hcd_product_img` VALUES ('63', '45', '20170705/807618fd72324a00b68a1de3ced1120c.jpg', '1');
-INSERT INTO `hcd_product_img` VALUES ('64', '46', '20170705/21ec5eec2f5c198fecd5ca4bdd40e52f.jpg', '1');
-INSERT INTO `hcd_product_img` VALUES ('65', '47', '20170705/d912a83b9b40487485df2815c0bbde75.jpg', '1');
-INSERT INTO `hcd_product_img` VALUES ('66', '47', '20170705/2f5ab4d6a10a39e6edc1c707b0d0bfeb.jpg', '1');
-INSERT INTO `hcd_product_img` VALUES ('67', '48', '20170705/284afee0693293512fccf1f78664da10.jpg', '1');
-INSERT INTO `hcd_product_img` VALUES ('68', '49', '20170705/3c637f97bb747022f8d0de8918e1b5e7.jpg', '0');
-INSERT INTO `hcd_product_img` VALUES ('69', '49', '20170724/19ed8985f245055f0c64dd6134261c41.jpg', '0');
-INSERT INTO `hcd_product_img` VALUES ('70', '49', '20170724/a07ff2894aab8c1ff94fef510432c3f7.jpg', '0');
-INSERT INTO `hcd_product_img` VALUES ('71', '49', '20170724/78ae9a3902a6a97641a5e3bdef1df549.jpg', '0');
-INSERT INTO `hcd_product_img` VALUES ('72', '49', '20170724/e2a00d1eca629afaf7f343f3b4272399.jpg', '0');
-INSERT INTO `hcd_product_img` VALUES ('73', '42', '20170724/12155f6e67b0d91f1be37509819dbc65.jpg', '0');
-INSERT INTO `hcd_product_img` VALUES ('74', '42', '20170724/2a4a14a2b8796da457dd8247363c3708.jpg', '1');
-INSERT INTO `hcd_product_img` VALUES ('75', '42', '20170724/147787a86e44253a3df62ee6b1f8c77a.jpg', '1');
 
 -- ----------------------------
 -- Table structure for hcd_user_copy
@@ -873,6 +704,7 @@ INSERT INTO `order_product` VALUES ('152', '14', '1', null, null);
 DROP TABLE IF EXISTS `product`;
 CREATE TABLE `product` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
+  `userid` int(10) unsigned DEFAULT NULL COMMENT '商家id',
   `name` varchar(80) NOT NULL COMMENT '商品名称',
   `desc` varchar(200) CHARACTER SET utf8 DEFAULT NULL,
   `price` decimal(6,2) NOT NULL COMMENT '价格,单位：分',
@@ -890,44 +722,50 @@ CREATE TABLE `product` (
   `state` tinyint(1) unsigned DEFAULT '1' COMMENT '1上架0下架',
   `status` tinyint(1) unsigned DEFAULT '1' COMMENT '状态1正常0已删除',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=41 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of product
 -- ----------------------------
-INSERT INTO `product` VALUES ('1', '芹菜 半斤', null, '10.00', '984', null, null, '3', '/product-vg@1.png', '1', null, null, null, '13', null, '1', '1');
-INSERT INTO `product` VALUES ('2', '梨花带雨 3个', null, '0.01', '984', null, null, '2', '/product-dryfruit@1.png', '1', null, null, null, '10', null, '1', '1');
-INSERT INTO `product` VALUES ('3', '素米 327克', null, '0.01', '996', null, null, '7', '/product-rice@1.png', '1', null, null, null, '31', null, '1', '1');
-INSERT INTO `product` VALUES ('4', '红袖枸杞 6克*3袋', null, '0.01', '998', null, null, '6', '/product-tea@1.png', '1', null, null, null, '32', null, '1', '1');
-INSERT INTO `product` VALUES ('5', '春生龙眼 500克', null, '0.01', '995', null, null, '2', '/product-dryfruit@2.png', '1', null, null, null, '33', null, '1', '1');
-INSERT INTO `product` VALUES ('6', '小红的猪耳朵 120克', null, '0.01', '997', null, null, '5', '/product-cake@2.png', '1', null, null, null, '53', null, '1', '1');
-INSERT INTO `product` VALUES ('7', '泥蒿 半斤', null, '0.01', '998', null, null, '3', '/product-vg@2.png', '1', null, null, null, '68', null, '1', '1');
-INSERT INTO `product` VALUES ('8', '夏日芒果 3个', null, '0.01', '995', null, null, '2', '/product-dryfruit@3.png', '1', null, null, null, '36', null, '1', '1');
-INSERT INTO `product` VALUES ('9', '冬木红枣 500克', null, '0.01', '996', null, null, '2', '/product-dryfruit@4.png', '1', null, null, null, '37', null, '1', '1');
-INSERT INTO `product` VALUES ('10', '万紫千凤梨 300克', null, '0.01', '996', null, null, '2', '/product-dryfruit@5.png', '1', null, null, null, '38', null, '1', '1');
-INSERT INTO `product` VALUES ('11', '贵妃笑 100克', null, '0.01', '994', null, null, '2', '/product-dryfruit-a@6.png', '1', null, null, null, '39', null, '1', '1');
-INSERT INTO `product` VALUES ('12', '珍奇异果 3个', null, '0.01', '999', null, null, '2', '/product-dryfruit@7.png', '1', null, null, null, '40', null, '1', '1');
-INSERT INTO `product` VALUES ('13', '绿豆 125克', null, '0.01', '999', null, null, '7', '/product-rice@2.png', '1', null, null, null, '41', null, '1', '1');
-INSERT INTO `product` VALUES ('14', '芝麻 50克', null, '0.01', '999', null, null, '7', '/product-rice@3.png', '1', null, null, null, '42', null, '1', '1');
-INSERT INTO `product` VALUES ('15', '猴头菇 370克', null, '0.01', '999', null, null, '7', '/product-rice@4.png', '1', null, null, null, '43', null, '1', '1');
-INSERT INTO `product` VALUES ('16', '西红柿 1斤', null, '0.01', '999', null, null, '3', '/product-vg@3.png', '1', null, null, null, '69', null, '1', '1');
-INSERT INTO `product` VALUES ('17', '油炸花生 300克', null, '0.01', '999', null, null, '4', '/product-fry@1.png', '1', null, null, null, '44', null, '1', '1');
-INSERT INTO `product` VALUES ('18', '春泥西瓜子 128克', null, '0.01', '997', null, null, '4', '/product-fry@2.png', '1', null, null, null, '45', null, '1', '1');
-INSERT INTO `product` VALUES ('19', '碧水葵花籽 128克', null, '0.01', '999', null, null, '4', '/product-fry@3.png', '1', null, null, null, '46', null, '1', '1');
-INSERT INTO `product` VALUES ('20', '碧螺春 12克*3袋', null, '0.01', '999', null, null, '6', '/product-tea@2.png', '1', null, null, null, '47', null, '1', '1');
-INSERT INTO `product` VALUES ('21', '西湖龙井 8克*3袋', null, '0.01', '998', null, null, '6', '/product-tea@3.png', '1', null, null, null, '48', null, '1', '1');
-INSERT INTO `product` VALUES ('22', '梅兰清花糕 1个', null, '0.01', '997', null, null, '5', '/product-cake-a@3.png', '1', null, null, null, '54', null, '1', '1');
-INSERT INTO `product` VALUES ('23', '清凉薄荷糕 1个', null, '0.01', '998', null, null, '5', '/product-cake-a@4.png', '1', null, null, null, '55', null, '1', '1');
-INSERT INTO `product` VALUES ('25', '小明的妙脆角 120克', null, '0.01', '999', null, null, '5', '/product-cake@1.png', '1', null, null, null, '52', null, '1', '1');
-INSERT INTO `product` VALUES ('26', '红衣青瓜 混搭160克', null, '0.01', '999', null, null, '2', '/product-dryfruit@8.png', '1', null, null, null, '56', null, '1', '1');
-INSERT INTO `product` VALUES ('27', '锈色瓜子 100克', null, '0.01', '998', null, null, '4', '/product-fry@4.png', '1', null, null, null, '57', null, '1', '1');
-INSERT INTO `product` VALUES ('28', '春泥花生 200克', null, '0.01', '999', null, null, '4', '/product-fry@5.png', '1', null, null, null, '58', null, '1', '1');
-INSERT INTO `product` VALUES ('29', '冰心鸡蛋 2个', null, '0.01', '999', null, null, '7', '/product-rice@5.png', '1', null, null, null, '59', null, '1', '1');
-INSERT INTO `product` VALUES ('30', '八宝莲子 200克', null, '0.01', '999', null, null, '7', '/product-rice@6.png', '1', null, null, null, '14', null, '1', '1');
-INSERT INTO `product` VALUES ('31', '深涧木耳 78克', null, '0.01', '999', null, null, '7', '/product-rice@7.png', '1', null, null, null, '60', null, '1', '1');
-INSERT INTO `product` VALUES ('32', '土豆 半斤', null, '0.01', '999', null, null, '3', '/product-vg@4.png', '1', null, null, null, '66', null, '1', '1');
-INSERT INTO `product` VALUES ('33', '青椒 半斤', null, '0.01', '999', null, null, '3', '/product-vg@5.png', '1', null, null, null, '67', null, '1', '1');
-INSERT INTO `product` VALUES ('34', '测试产品11', '极品产品', '100.00', '999', '21', null, '2', null, '1', '1503136668', null, null, null, '<p>产品详情说明</p><p>哈哈哈</p><p><br/></p><p>\r\n						</p>', '1', '1');
+INSERT INTO `product` VALUES ('1', '2', '芹菜 半斤', null, '10.00', '984', null, null, '3', '/product-vg@1.png', '1', null, null, null, '13', null, '1', '1');
+INSERT INTO `product` VALUES ('2', '2', '梨花带雨 3个', null, '0.01', '984', null, null, '2', '/product-dryfruit@1.png', '1', null, null, null, '10', null, '1', '1');
+INSERT INTO `product` VALUES ('3', '2', '素米 327克', null, '0.01', '996', null, null, '7', '/product-rice@1.png', '1', null, null, null, '31', null, '1', '1');
+INSERT INTO `product` VALUES ('4', '2', '红袖枸杞 6克*3袋', null, '0.01', '998', null, null, '6', '/product-tea@1.png', '1', null, null, null, '32', null, '1', '1');
+INSERT INTO `product` VALUES ('5', '2', '春生龙眼 500克', null, '0.01', '995', null, null, '2', '/product-dryfruit@2.png', '1', null, null, null, '33', null, '1', '1');
+INSERT INTO `product` VALUES ('6', '2', '小红的猪耳朵 120克', null, '0.01', '997', null, null, '5', '/product-cake@2.png', '1', null, null, null, '53', null, '1', '1');
+INSERT INTO `product` VALUES ('7', '2', '泥蒿 半斤', null, '0.01', '998', null, null, '3', '/product-vg@2.png', '1', null, null, null, '68', null, '1', '1');
+INSERT INTO `product` VALUES ('8', '2', '夏日芒果 3个', null, '0.01', '995', null, null, '2', '/product-dryfruit@3.png', '1', null, null, null, '36', null, '1', '1');
+INSERT INTO `product` VALUES ('9', '2', '冬木红枣 500克', null, '0.01', '996', null, null, '2', '/product-dryfruit@4.png', '1', null, null, null, '37', null, '1', '1');
+INSERT INTO `product` VALUES ('10', '2', '万紫千凤梨 300克', null, '0.01', '996', null, null, '2', '/product-dryfruit@5.png', '1', null, null, null, '38', null, '1', '1');
+INSERT INTO `product` VALUES ('11', '2', '贵妃笑 100克', null, '0.01', '994', null, null, '2', '/product-dryfruit-a@6.png', '1', null, null, null, '39', null, '1', '1');
+INSERT INTO `product` VALUES ('12', '2', '珍奇异果 3个', null, '0.01', '999', null, null, '2', '/product-dryfruit@7.png', '1', null, null, null, '40', null, '1', '1');
+INSERT INTO `product` VALUES ('13', '2', '绿豆 125克', null, '0.01', '999', null, null, '7', '/product-rice@2.png', '1', null, null, null, '41', null, '1', '1');
+INSERT INTO `product` VALUES ('14', '2', '芝麻 50克', null, '0.01', '999', null, null, '7', '/product-rice@3.png', '1', null, null, null, '42', null, '1', '1');
+INSERT INTO `product` VALUES ('15', '2', '猴头菇 370克', null, '0.01', '999', null, null, '7', '/product-rice@4.png', '1', null, null, null, '43', null, '1', '1');
+INSERT INTO `product` VALUES ('16', '2', '西红柿 1斤', null, '0.01', '999', null, null, '3', '/product-vg@3.png', '1', null, null, null, '69', null, '1', '1');
+INSERT INTO `product` VALUES ('17', '2', '油炸花生 300克', null, '0.01', '999', null, null, '4', '/product-fry@1.png', '1', null, null, null, '44', null, '1', '1');
+INSERT INTO `product` VALUES ('18', '2', '春泥西瓜子 128克', null, '0.01', '997', null, null, '4', '/product-fry@2.png', '1', null, null, null, '45', null, '1', '1');
+INSERT INTO `product` VALUES ('19', '2', '碧水葵花籽 128克', null, '0.01', '999', null, null, '4', '/product-fry@3.png', '1', null, null, null, '46', null, '1', '1');
+INSERT INTO `product` VALUES ('20', '2', '碧螺春 12克*3袋', null, '0.01', '999', null, null, '6', '/product-tea@2.png', '1', null, null, null, '47', null, '1', '1');
+INSERT INTO `product` VALUES ('21', '2', '西湖龙井 8克*3袋', null, '0.01', '998', null, null, '6', '/product-tea@3.png', '1', null, null, null, '48', null, '1', '1');
+INSERT INTO `product` VALUES ('22', '2', '梅兰清花糕 1个', null, '0.01', '997', null, null, '5', '/product-cake-a@3.png', '1', null, null, null, '54', null, '1', '1');
+INSERT INTO `product` VALUES ('23', '2', '清凉薄荷糕 1个', null, '0.01', '998', null, null, '5', '/product-cake-a@4.png', '1', null, null, null, '55', null, '1', '1');
+INSERT INTO `product` VALUES ('25', '2', '小明的妙脆角 120克', null, '0.01', '999', null, null, '5', '/product-cake@1.png', '1', null, null, null, '52', null, '1', '1');
+INSERT INTO `product` VALUES ('26', '2', '红衣青瓜 混搭160克', null, '0.01', '999', null, null, '2', '/product-dryfruit@8.png', '1', null, null, null, '56', null, '1', '1');
+INSERT INTO `product` VALUES ('27', '2', '锈色瓜子 100克', null, '0.01', '998', null, null, '4', '/product-fry@4.png', '1', null, null, null, '57', null, '1', '1');
+INSERT INTO `product` VALUES ('28', '2', '春泥花生 200克', null, '0.01', '999', null, null, '4', '/product-fry@5.png', '1', null, null, null, '58', null, '1', '1');
+INSERT INTO `product` VALUES ('29', '2', '冰心鸡蛋 2个', null, '0.01', '999', null, null, '7', '/product-rice@5.png', '1', null, null, null, '59', null, '1', '1');
+INSERT INTO `product` VALUES ('30', '2', '八宝莲子 200克', null, '0.01', '999', null, null, '7', '/product-rice@6.png', '1', null, null, null, '14', null, '1', '1');
+INSERT INTO `product` VALUES ('31', '2', '深涧木耳 78克', null, '0.01', '999', null, null, '7', '/product-rice@7.png', '1', null, null, null, '60', null, '1', '1');
+INSERT INTO `product` VALUES ('32', '2', '土豆 半斤', null, '0.01', '999', null, null, '3', '/product-vg@4.png', '1', null, null, null, '66', null, '1', '1');
+INSERT INTO `product` VALUES ('33', '2', '青椒 半斤', null, '0.01', '999', null, null, '3', '/product-vg@5.png', '1', null, null, null, '67', null, '1', '1');
+INSERT INTO `product` VALUES ('34', '2', '测试产品11', '极品产品', '100.00', '999', '21', null, '2', null, '1', '1503136668', null, null, null, '<p>产品详情说明</p><p>哈哈哈</p><p><br/></p><p>\r\n						</p>', '1', '1');
+INSERT INTO `product` VALUES ('35', '2', '坚果pro 64G', '64g 双卡双待', '1799.00', '999', '0', null, '9', null, '1', '1503305578', null, null, null, '<p>就是好看！</p>', '1', '1');
+INSERT INTO `product` VALUES ('36', '2', '锤子T1手机11', '经典就是漂亮!', '3200.00', '777', '111', null, '12', null, '1', '1503305690', null, null, null, '<p>121212</p><p>\r\n						</p>', '1', '1');
+INSERT INTO `product` VALUES ('37', '4', '小米mix', '全面屏概念手机', '2699.00', '999', '145', null, '14', null, '1', '1503965967', null, null, null, '<p>产品详情<br/></p>', '1', '1');
+INSERT INTO `product` VALUES ('38', '4', '小米note2', '双曲面手机', '2499.00', '888', '111', null, '14', null, '1', '1503966048', null, null, null, '<p>113131<br/></p>', '1', '1');
+INSERT INTO `product` VALUES ('39', '4', '红米note4A', '超高性价比', '899.00', '777', '111', null, '15', null, '1', '1503966108', null, null, null, '<p>33333<br/></p>', '1', '1');
+INSERT INTO `product` VALUES ('40', '4', '小米电视4', '大屏幕就是爽', '4999.00', '888', '111', null, '16', null, '1', '1503966148', null, null, null, '<p>555<br/></p>', '1', '1');
 
 -- ----------------------------
 -- Table structure for product_image
@@ -942,26 +780,34 @@ CREATE TABLE `product_image` (
   `product_id` int(11) NOT NULL COMMENT '商品id，外键',
   `status` tinyint(1) unsigned DEFAULT '1' COMMENT '1正常0已删除',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8mb4;
 
 -- ----------------------------
 -- Records of product_image
 -- ----------------------------
-INSERT INTO `product_image` VALUES ('4', '19', null, null, '1', '11', '1');
-INSERT INTO `product_image` VALUES ('5', '20', null, null, '2', '11', '1');
-INSERT INTO `product_image` VALUES ('6', '21', null, null, '3', '11', '1');
-INSERT INTO `product_image` VALUES ('7', '22', null, null, '4', '11', '1');
-INSERT INTO `product_image` VALUES ('8', '23', null, null, '5', '11', '1');
-INSERT INTO `product_image` VALUES ('9', '24', null, null, '6', '11', '1');
-INSERT INTO `product_image` VALUES ('10', '25', null, null, '7', '11', '1');
-INSERT INTO `product_image` VALUES ('11', '26', null, null, '8', '11', '1');
-INSERT INTO `product_image` VALUES ('12', '27', null, null, '9', '11', '1');
-INSERT INTO `product_image` VALUES ('13', '28', null, null, '11', '11', '1');
-INSERT INTO `product_image` VALUES ('14', '29', null, null, '10', '11', '1');
-INSERT INTO `product_image` VALUES ('18', '62', null, null, '12', '11', '1');
-INSERT INTO `product_image` VALUES ('19', '63', null, null, '13', '11', '1');
-INSERT INTO `product_image` VALUES ('20', null, '20170819\\660513a80823fa2c06737dabb1357c04.jpg', null, '0', '34', '1');
-INSERT INTO `product_image` VALUES ('21', null, '20170819\\4785acb2c408cc117fc2f4fa41210663.jpg', null, '0', '34', '1');
+INSERT INTO `product_image` VALUES ('4', '19', '/detail-1@1-dryfruit.png', null, '1', '11', '1');
+INSERT INTO `product_image` VALUES ('5', '20', '/detail-2@1-dryfruit.png', null, '2', '11', '1');
+INSERT INTO `product_image` VALUES ('6', '21', '/detail-3@1-dryfruit.png', null, '3', '11', '1');
+INSERT INTO `product_image` VALUES ('7', '22', '/detail-4@1-dryfruit.png', null, '4', '11', '1');
+INSERT INTO `product_image` VALUES ('8', '23', '/detail-5@1-dryfruit.png', null, '5', '11', '1');
+INSERT INTO `product_image` VALUES ('9', '24', '/detail-6@1-dryfruit.png', null, '6', '11', '1');
+INSERT INTO `product_image` VALUES ('10', '25', '/detail-7@1-dryfruit.png', null, '7', '11', '1');
+INSERT INTO `product_image` VALUES ('11', '26', '/detail-8@1-dryfruit.png', null, '8', '11', '1');
+INSERT INTO `product_image` VALUES ('12', '27', '/detail-9@1-dryfruit.png', null, '9', '11', '1');
+INSERT INTO `product_image` VALUES ('13', '28', '/detail-11@1-dryfruit.png', null, '11', '11', '1');
+INSERT INTO `product_image` VALUES ('14', '29', '/detail-10@1-dryfruit.png', null, '10', '11', '1');
+INSERT INTO `product_image` VALUES ('18', '62', '/detail-12@1-dryfruit.png', null, '12', '11', '1');
+INSERT INTO `product_image` VALUES ('19', '63', '/detail-13@1-dryfruit.png', null, '13', '11', '1');
+INSERT INTO `product_image` VALUES ('20', null, '20170819/660513a80823fa2c06737dabb1357c04.jpg', null, '0', '34', '1');
+INSERT INTO `product_image` VALUES ('21', null, '20170819/4785acb2c408cc117fc2f4fa41210663.jpg', null, '0', '34', '1');
+INSERT INTO `product_image` VALUES ('22', null, '20170821/62e5505769ecc49d55bfefd6c97f7508.jpg', null, '0', '35', '1');
+INSERT INTO `product_image` VALUES ('23', null, '20170821/b58926ea619b1e7299a554e18e1d1a19.png', null, '0', '35', '1');
+INSERT INTO `product_image` VALUES ('24', null, '20170821/c9feedee72daa43d7f65b12aafb03dee.png', null, '0', '36', '1');
+INSERT INTO `product_image` VALUES ('25', null, '20170829/675ee956c1da60e1a3529e7affbb3259.png', null, '0', '37', '1');
+INSERT INTO `product_image` VALUES ('26', null, '20170829/10450a0c8f7011499bbc30d24155b8b4.png', null, '0', '38', '1');
+INSERT INTO `product_image` VALUES ('27', null, '20170829/7aa68ef5c78216d78ea8ba0ff5023073.png', null, '0', '38', '1');
+INSERT INTO `product_image` VALUES ('28', null, '20170829/0464cddb42fd1b1655dffe2c85ee57d9.png', null, '0', '39', '1');
+INSERT INTO `product_image` VALUES ('29', null, '20170829/cc923907bab8e1a5b11c15b5866e1f15.png', null, '0', '40', '1');
 
 -- ----------------------------
 -- Table structure for product_property
@@ -1000,18 +846,22 @@ CREATE TABLE `shops` (
   `sellername` varchar(40) DEFAULT NULL COMMENT '店主卖家账号',
   `password` varchar(100) DEFAULT NULL COMMENT '登录密码',
   `appid` varchar(40) DEFAULT NULL,
+  `appstr` varchar(50) DEFAULT NULL COMMENT '用户识别码',
   `secret` varchar(60) DEFAULT NULL,
   `mch_id` varchar(60) DEFAULT NULL,
   `api_key` varchar(60) DEFAULT NULL,
   `state` tinyint(1) unsigned DEFAULT '1' COMMENT '状态1正常0禁用',
   `addtime` int(10) unsigned DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of shops
 -- ----------------------------
-INSERT INTO `shops` VALUES ('1', 'thinkpad旗舰店', '695847482@', 'hcd', 'c9931d32a96d5936d264fb7d37acb4e7', '213jldjflajflcc', 'fjaljojx', 'fjaljflx', 'fjljxljxss', '1', '1503196688');
+INSERT INTO `shops` VALUES ('1', 'thinkpad旗舰店', '695847482@', 'hcd', 'c9931d32a96d5936d264fb7d37acb4e7', '213jldjflajflcc', null, 'fjaljojx', 'fjaljflx', 'fjljxljxss', '1', '1503196688');
+INSERT INTO `shops` VALUES ('2', '锤子旗舰店', 'smart', 'laoluo', '670b14728ad9902aecba32e22fa4f6bd', 'wxec0a16db0f2b2986', null, '222', '333', '4444', '1', '1503303823');
+INSERT INTO `shops` VALUES ('3', '诺基亚旗舰店', 'nokia', 'nuo jiya', '670b14728ad9902aecba32e22fa4f6bd', 'afa', null, '2', '2', '2', '1', '1503628379');
+INSERT INTO `shops` VALUES ('4', '小米官方旗舰店', 'xiaomi', 'xiaomi', '670b14728ad9902aecba32e22fa4f6bd', 'xiaomi123', null, '1212', 'wewe', 'afaf', '1', '1503965568');
 
 -- ----------------------------
 -- Table structure for theme
@@ -1094,6 +944,7 @@ INSERT INTO `third_app` VALUES ('1', 'starcraft', '777*777', 'CMS', '32', 'Super
 DROP TABLE IF EXISTS `user`;
 CREATE TABLE `user` (
   `userid` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT '用户id',
+  `ownid` int(10) unsigned NOT NULL DEFAULT '0' COMMENT '商家id',
   `openid` varchar(100) DEFAULT NULL COMMENT '微信openid',
   `wxname` varchar(100) DEFAULT NULL COMMENT '微信昵称',
   `name` varchar(100) DEFAULT NULL COMMENT '收货人姓名',
@@ -1108,7 +959,7 @@ CREATE TABLE `user` (
 -- ----------------------------
 -- Records of user
 -- ----------------------------
-INSERT INTO `user` VALUES ('1', null, null, 'hcd', '13022731091', null, null, '深圳市龙华区', '1');
+INSERT INTO `user` VALUES ('1', '0', null, null, 'hcd', '13022731091', null, null, '深圳市龙华区', '1');
 
 -- ----------------------------
 -- Table structure for user11

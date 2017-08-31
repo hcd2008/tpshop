@@ -53,6 +53,7 @@
     <li {if $controller=='Category'}class="cur"{/if}><a href="{:url('category/index')}"><i class="productCat"></i><em>产品分类管理</em></a></li>
 
     <li {if $controller=='Product'}class="cur"{/if}><a href="{:url('product/index')}"><i class="product"></i><em>产品管理</em></a></li>
+    <li {if $controller=='Theme'}class="cur"{/if}><a href="{:url('theme/index')}"><i class="articleCat"></i><em>主题管理</em></a></li>
 
     <li {if $controller=='Order'}class="cur"{/if}><a href="{:url('order/index')}"><i class="page"></i><em>订单管理</em></a></li>
     {if $Think.session.gly==1}<li {if $controller=='Shops'}class="cur"{/if}><a href="{:url('shops/index')}"><i class="theme"></i><em>商铺管理</em></a></li>{/if}
